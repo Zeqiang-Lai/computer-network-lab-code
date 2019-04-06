@@ -43,7 +43,7 @@ InfoString=347D7E807E40AA7D                    （32bits）
 FlagString=7E
 ```
 
-## 配置说明
+### 配置说明
 
 linux下和windows下读取配置文件中换行符的区别：
 
