@@ -26,16 +26,17 @@ crc.exe [confirguare path] // Windows
 ### 编译说明
 
 ```shell
-// 怎么编译？，在这里写编译指令。
-javac ....
-不会Java命令行编译的话学下，学不懂？你可以选择弃疗，然后把这部分删了。
+javac -encoding UTF-8 crc.java
+jar -cf crc.jar crc.class 
 ```
 
 ### 运行说明
 
-写以下内容：
+```
+java crc crc.jar [confirguare path]
+```
 
-- 怎么运行？
+
 
 
 
