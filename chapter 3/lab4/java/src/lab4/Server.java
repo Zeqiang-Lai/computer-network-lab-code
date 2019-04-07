@@ -30,7 +30,7 @@ public class Server extends TransmitInfo{
 		Map<String, String> map = ReadIniFile.readFile();
 		setPort(Integer.parseInt(map.get("UDPPort")));
 		
-		DatagramSocket socket = new DatagramSocket();
+		socket = new DatagramSocket(8800);
 		
 //		String str = "HEllo";
 //		String address = "127.0.0.1";
@@ -88,7 +88,7 @@ public class Server extends TransmitInfo{
 		String remainder = Crc.crc_remainder(strbuff);
 		strbuff.append(remainder);
 		
-		packet = new DatagramPacket(strbuff.toString().getBytes(), strbuff.length(), InetAddress.getByName("localhost"), 8800);
+		packet = new DatagramPacket(strbuff.toString().getBytes(), strbuff.length(), InetAddress.getLocalHost(), 8800);
 //		}else{
 //			 packet = new DatagramPacket(strbuff.toString().getBytes(), s.length(), ip, port);
 //		}
