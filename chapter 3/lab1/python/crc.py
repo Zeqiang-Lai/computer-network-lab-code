@@ -40,9 +40,9 @@ def read_configuration(file_path):
 
 def contain(check_remainder):
     if check_remainder.find('1'):
-        print "Valid:                                      true"
+        print "Valid:                            true"
     else:
-        print "Valid:                                      false"
+        print "Valid:                            false"
 
 
 list_1 =read_configuration('crc.ini')
@@ -55,11 +55,11 @@ check_remainder = crc_check(send_string+crc_code_receive,poly)
 
 
 print "Message to be sent:               "+send_string
-print "CRC-Code:                             "+crc_code_send
-print "Message with checksum(crc): "+send_string+crc_code_send
+print "CRC-Code:                         "+crc_code_send
+print "Message with checksum(crc):       "+send_string+crc_code_send
 print "----------------------------------------------------"
-print "Message received:                  "+received_string
-print "CRC-Code:                              "+crc_code_receive
-print "Message with checksum(crc): "+send_string+crc_code_receive
-print "Remainder:                             "+check_remainder
+print "Message received:                 "+received_string
+print "CRC-Code:                         "+crc_code_receive
+print "Message with checksum(crc):       "+send_string+crc_code_receive
+print "Remainder:                        "+check_remainder
 contain(check_remainder)

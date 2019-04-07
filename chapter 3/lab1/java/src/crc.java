@@ -35,7 +35,7 @@ public class crc
             }
             return padded_input.substring(len_input,len_input+len_poly-1);
        }
-    static String crc_check(StringBuffer input_bitstring,StringBuffer poly)//crc码的检验程序
+    static String crc_check(StringBuffer input_bitstring,StringBuffer poly)//crc码的生成程序
     {
         int len_input = input_bitstring.length();
         int len_poly = poly.length();
@@ -106,18 +106,18 @@ public class crc
            send_string =new StringBuffer(h[4]);
            int pos1=check_remainder.indexOf("1");
            System.out.println("Message to be sent:                "+send_string+"\n");
-           System.out.println("CRC_Code:                              "+crc_code_send+"\n");
-           System.out.println("Message with checksum(crc): "+Message_send+"\n");
+           System.out.println("CRC_Code:                          "+crc_code_send+"\n");
+           System.out.println("Message with checksum(crc):        "+Message_send+"\n");
            System.out.println("----------------------------------------------------"+"\n");
            System.out.println("Message recevied:                  "+recevied_string+"\n");
-           System.out.println("CRC_Code:                              "+crc_code_receive+"\n");
-           System.out.println("Message with checksum(crc): "+Message_receive+"\n");
+           System.out.println("CRC_Code:                          "+crc_code_receive+"\n");
+           System.out.println("Message with checksum(crc):        "+Message_receive+"\n");
 
-           System.out.println("Remainder:                             "+check_remainder+"\n");
+           System.out.println("Remainder:                         "+check_remainder+"\n");
 
            if(pos1==-1)
-               System.out.println("Valid:                                       "+"true");
+               System.out.println("Valid:                             "+"true");
            else
-              System.out.println("Valid:                                        "+"false");
+              System.out.println("Valid:                              "+"false");
        }
 }
