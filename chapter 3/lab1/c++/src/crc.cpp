@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 {
     string ini_path = "crc.ini";
     if(argc == 2)
-        ini_path = string(argv[2]);
+        ini_path = string(argv[1]);
 
     string send_string;
     string received_string;
