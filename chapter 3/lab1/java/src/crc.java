@@ -35,7 +35,7 @@ public class crc
             }
             return padded_input.substring(len_input,len_input+len_poly-1);
        }
-    static String crc_check(StringBuffer input_bitstring,StringBuffer poly)//crc码的生成程序
+    static String crc_check(StringBuffer input_bitstring,StringBuffer poly)//crc码的检验程序
     {
         int len_input = input_bitstring.length();
         int len_poly = poly.length();
