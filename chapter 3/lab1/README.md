@@ -44,9 +44,11 @@ java crc crc.jar [confirguare path]
 
 ### 运行说明
 
-写以下内容：
+```
+python crc.py
+```
 
-- 怎么运行？
+
 
 ## 配置文件
 
