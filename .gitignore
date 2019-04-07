@@ -2,3 +2,4 @@
 .vscode
 *.docx
 chapter3/doc/*
+*/*/*/bin/*
