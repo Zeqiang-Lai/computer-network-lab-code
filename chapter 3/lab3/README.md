@@ -4,7 +4,7 @@ C++实现：[谁实现的，自己把名字写这]，删掉方括号别犯傻。
 
 Java实现：同上。
 
-Python实现：同上。
+Python实现：李安腾 张诗意
 
 ## C++
 
@@ -46,9 +46,4 @@ javac ....
 ## Python
 
 ### 运行说明
-
-写以下内容：
-
-- 怎么运行？
-- 怎么输入？
-- 配置文件的格式？
+将server.py、client.py、crc.py、crc.ini放在同一个文件夹下，运行server.py，再运行client.py即可
