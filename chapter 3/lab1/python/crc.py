@@ -1,3 +1,4 @@
+import sys
 def XOR(a,b):
     if a==b:
         return '0'
@@ -36,6 +37,8 @@ def crc_check(input_string,poly):
 
 def read_configuration(file_path):
     f=open(file_path,'r')
+    if f==-1:
+        print("file open error!")
     list=f.readlines()
     return list
     f.close()
@@ -58,8 +61,10 @@ def show_check_example(bit_string,poly):
         print("Valid:                            false")
 
 
-
-list_1 =read_configuration('crc.ini')
+file_path='crc.ini'
+if len(sys.argv)==2:
+    file_path = sys.argv[1]
+list_1 =read_configuration(file_path)
 send_string = ''.join(list_1[4]).replace("\n","")
 poly = ''.join(list_1[3]).replace("\n","")
 received_string = list_1[5].replace("\n","")
@@ -80,6 +85,6 @@ print("True example:")
 show_check_example(actual_rec_str,poly)
 print("False example:")
 ans = list(actual_rec_str)
-ans[1]=XOR(ans[1],"1")
+ans[len(actual_rec_str)-1]=XOR(ans[len(actual_rec_str)-1],"1")
 actual_rec_str=''.join(ans)
 show_check_example(actual_rec_str,poly)

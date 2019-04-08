@@ -28,7 +28,7 @@ crc.exe [confirguare path] // Windows
 
 ```shell
 javac -encoding UTF-8 crc.java
-jar -cf crc.jar crc.class 
+jar cfe crc.jar crc crc.class 
 ```
 
 ### 运行说明

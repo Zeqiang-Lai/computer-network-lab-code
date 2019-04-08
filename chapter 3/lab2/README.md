@@ -11,8 +11,8 @@ Python实现：同上。
 ### 编译说明
 
 ```shell
-g++ -o Bit_Fill.exe Bit_Fill.cpp
-g++ -o Byte_Fill.exe Byte_Fill.cpp
+g++ -o Bit_Fill Bit_Fill.cpp
+g++ -o Byte_Fill Byte_Fill.cpp
 ```
 
 ### 运行说明

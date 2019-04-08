@@ -77,8 +77,10 @@ public class crc
        }
        public static  void show_check_example(StringBuffer bit_string,StringBuffer poly)
        {
+           StringBuffer bit_string2=new StringBuffer(bit_string);
            String check_remainder=crc_check(bit_string,poly);
            int pos1=check_remainder.indexOf("1");
+           bit_string = new StringBuffer(bit_string2);
            System.out.println("Actual string received:            "+bit_string);
            System.out.println("Remainder:                         "+check_remainder);
            if(pos1==-1)
@@ -88,11 +90,11 @@ public class crc
        }
        public static void main(String args[])throws Exception
        {
-           String ini_path="C:\\Users\\ht158\\IdeaProjects\\untitled3\\src\\crc.ini";
-           String h[]=new String[8];//存储划分后的子串
-           if(args.length>1)
+           String ini_path="crc.ini";
+           String h[]=new String[100];//存储划分后的子串
+           if(args.length==1)
            {
-               ini_path=args[1];
+               ini_path=args[0];
            }
            int i=0;
            StringBuffer ans=read_configuration(ini_path);
@@ -126,7 +128,7 @@ public class crc
            show_check_example(Message_receive,poly);
            Message_receive=new StringBuffer(recevied_string.append(crc_code_receive));
            System.out.println("False example:");
-           Message_receive.setCharAt(1,XOR(Message_receive.charAt(1),'1'));
+           Message_receive.setCharAt(Message_receive.length()-1,XOR(Message_receive.charAt(Message_receive.length()-1),'1'));
            show_check_example(Message_receive,poly);
        }
 }
