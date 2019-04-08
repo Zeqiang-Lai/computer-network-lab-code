@@ -37,9 +37,9 @@ public class crc
        }
     static String crc_check(StringBuffer input_bitstring,StringBuffer poly)//crc码的生成程序
     {
-        int len_input = input_bitstring.length();
-        int len_poly = poly.length();
 
+        int len_poly = poly.length();
+        int len_input = input_bitstring.length()-len_poly;
         StringBuffer padded_input = input_bitstring;
 
         for(int j=0;j<len_input;++j)
@@ -75,6 +75,17 @@ public class crc
            }
            return sb;//返回读出的所有字符
        }
+       public static  void show_check_example(StringBuffer bit_string,StringBuffer poly)
+       {
+           String check_remainder=crc_check(bit_string,poly);
+           int pos1=check_remainder.indexOf("1");
+           System.out.println("Actual string received:            "+bit_string);
+           System.out.println("Remainder:                         "+check_remainder);
+           if(pos1==-1)
+               System.out.println("Valid:                             "+"true");
+           else
+               System.out.println("Valid:                             "+"false");
+       }
        public static void main(String args[])throws Exception
        {
            String ini_path="C:\\Users\\ht158\\IdeaProjects\\untitled3\\src\\crc.ini";
@@ -100,11 +111,10 @@ public class crc
            send_string =new StringBuffer(h[4]);
            StringBuffer Message_send=new StringBuffer(send_string.append(crc_code_send));
            send_string =new StringBuffer(h[4]);
-           StringBuffer Message_receive=new StringBuffer(send_string.append(crc_code_receive));
+           StringBuffer Message_receive=new StringBuffer(recevied_string.append(crc_code_receive));
            send_string =new StringBuffer(h[4]);
-           String check_remainder=crc_check(Message_receive,poly);
+           recevied_string=new StringBuffer(h[5]);
            send_string =new StringBuffer(h[4]);
-           int pos1=check_remainder.indexOf("1");
            System.out.println("Message to be sent:                "+send_string+"\n");
            System.out.println("CRC_Code:                          "+crc_code_send+"\n");
            System.out.println("Message with checksum(crc):        "+Message_send+"\n");
@@ -112,12 +122,11 @@ public class crc
            System.out.println("Message recevied:                  "+recevied_string+"\n");
            System.out.println("CRC_Code:                          "+crc_code_receive+"\n");
            System.out.println("Message with checksum(crc):        "+Message_receive+"\n");
-
-           System.out.println("Remainder:                         "+check_remainder+"\n");
-
-           if(pos1==-1)
-               System.out.println("Valid:                             "+"true");
-           else
-              System.out.println("Valid:                              "+"false");
+           System.out.println("True example:");
+           show_check_example(Message_receive,poly);
+           Message_receive=new StringBuffer(recevied_string.append(crc_code_receive));
+           System.out.println("False example:");
+           Message_receive.setCharAt(1,XOR(Message_receive.charAt(1),'1'));
+           show_check_example(Message_receive,poly);
        }
 }

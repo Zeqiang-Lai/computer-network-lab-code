@@ -1,11 +1,12 @@
 def XOR(a,b):
-    if cmp(a,b):
-        return '1'
-    else:
+    if a==b:
         return '0'
+    else:
+        return '1'
 def crc_remainder(input_string,poly):
-    len_input = len(input_string)
     len_poly = len(poly)
+    len_input = len(input_string)
+
     padding = '0'*(len_poly-1)
     padded_input = input_string+padding
     for i in range(0,len_input,1):
@@ -19,8 +20,9 @@ def crc_remainder(input_string,poly):
     return padded_input[len_input:len_poly+len_input]
 
 def crc_check(input_string,poly):
-    len_input = len(input_string)
     len_poly = len(poly)
+    len_input = len(input_string)-len_poly
+
     padded_input = input_string
     for i in range(0, len_input, 1):
         if padded_input[i] == '0':
@@ -38,11 +40,23 @@ def read_configuration(file_path):
     return list
     f.close()
 
-def contain(check_remainder):
-    if check_remainder.find('1'):
-        print "Valid:                            true"
+def index_of_str(s1, s2):
+   n= len(s1)
+   for x in range(n):
+      if s1[x]==s2:
+         return x
+   if s1[x]!=s2:
+      return -1
+
+def show_check_example(bit_string,poly):
+    check_remainder=crc_check(bit_string,poly)
+    print("Actual string received:           "+bit_string)
+    print("Remainder:                        "+check_remainder)
+    if index_of_str(check_remainder,"1")==-1:
+        print("Valid:                            true")
     else:
-        print "Valid:                            false"
+        print("Valid:                            false")
+
 
 
 list_1 =read_configuration('crc.ini')
@@ -51,15 +65,21 @@ poly = ''.join(list_1[3]).replace("\n","")
 received_string = list_1[5].replace("\n","")
 crc_code_send = crc_remainder(send_string,poly)
 crc_code_receive = crc_remainder(send_string,poly)
-check_remainder = crc_check(send_string+crc_code_receive,poly)
+actual_rec_str = received_string+crc_code_receive
 
 
-print "Message to be sent:               "+send_string
-print "CRC-Code:                         "+crc_code_send
-print "Message with checksum(crc):       "+send_string+crc_code_send
-print "----------------------------------------------------"
-print "Message received:                 "+received_string
-print "CRC-Code:                         "+crc_code_receive
-print "Message with checksum(crc):       "+send_string+crc_code_receive
-print "Remainder:                        "+check_remainder
-contain(check_remainder)
+print ("Message to be sent:               "+send_string)
+print ("CRC-Code:                         "+crc_code_send)
+print ("Message with checksum(crc):       "+send_string+crc_code_send)
+print ("----------------------------------------------------")
+print ("Message received:                 "+received_string)
+print ("CRC-Code:                         "+crc_code_receive)
+print ("Message with checksum(crc):       "+actual_rec_str)
+
+print("True example:")
+show_check_example(actual_rec_str,poly)
+print("False example:")
+ans = list(actual_rec_str)
+ans[1]=XOR(ans[1],"1")
+actual_rec_str=''.join(ans)
+show_check_example(actual_rec_str,poly)
