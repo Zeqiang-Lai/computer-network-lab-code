@@ -3,3 +3,5 @@
 *.docx
 chapter3/doc/*
 */*/*/bin/*
+*.class
+*.o
