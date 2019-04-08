@@ -19,6 +19,7 @@ g++ crc.cpp -o crc
 ```shell
 ./crc [confirguare path] // Linxu
 crc.exe [confirguare path] // Windows
+// confirguare path 默认为crc.ini
 ```
 
 ## Java
@@ -33,7 +34,8 @@ jar -cf crc.jar crc.class
 ### 运行说明
 
 ```
-java crc crc.jar [confirguare path]
+java -jar crc.jar [confirguare path]
+// confirguare path 默认为crc.ini
 ```
 
 ## Python
@@ -41,7 +43,8 @@ java crc crc.jar [confirguare path]
 ### 运行说明
 
 ```
-python crc.py
+python crc.py [confirguare path]
+// confirguare path 默认为crc.ini
 ```
 
 ## 配置文件
