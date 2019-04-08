@@ -1,2 +1,7 @@
 .DS_Store
 .vscode
+*.docx
+chapter3/doc/*
+*/*/*/bin/*
+*.class
+*.o

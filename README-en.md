@@ -1,6 +1,6 @@
 # Computer Network Lab Code
 
-Here are our source code for the Computer Network labs, 2019 spring.
+Here are the source code of our team for the Computer Network labs, 2019 spring.
 
 ## Chapter 3
 
@@ -10,21 +10,12 @@ All labs are implemented in three language,
 2. Java
 3. Python3
 
-**Lab1. Generation and Verification of CRC**
+There are four labs in Chapter3, which are shown below.
 
-
-
-Related pages: 212-213.
-
-**Lab2. **
-
-
-
-**Lab3. "Stop and wait protocol"-based Comunication**
-
-
-
-**Lab4. **
+1. Generation and Verification of CRC
+2. Transparent Comunication
+3. Reliable Comunication based on Stop-and-wait protocol
+4. Reliable Comunication based on ARQ protocol
 
 ## Team
 
