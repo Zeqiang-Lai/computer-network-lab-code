@@ -36,10 +36,6 @@ jar -cf crc.jar crc.class
 java crc crc.jar [confirguare path]
 ```
 
-
-
-
-
 ## Python
 
 ### 运行说明
@@ -47,8 +43,6 @@ java crc crc.jar [confirguare path]
 ```
 python crc.py
 ```
-
-
 
 ## 配置文件
 
@@ -64,5 +58,3 @@ python crc.py
 01101111011011010010101010101101
 01101111011011010010101010101101
 ```
-
-## 
