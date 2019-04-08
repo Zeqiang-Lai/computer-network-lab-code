@@ -44,15 +44,17 @@ public class Client extends TransmitInfo{
 	private static int MaxSize = 1024;
 	private static InetAddress ip = null;
 	private static int Nbuffered = 0;
-	private static String[] message = {"1111111111111", 
+	private static String[] message = {"55555555", 
 								"100011111000",
 								"1010101010101"}; 
+	
+	
 	
 	public static void main(String[] args) throws IOException {
 		Map<String, String> map = ReadIniFile.readFile();
 		setPort(Integer.parseInt(map.get("UDPPort")));
 		
-		socket = new DatagramSocket();
+		socket = new DatagramSocket(8800);
 		
 //		String str = "HEllo";
 //		String address = "127.0.0.1";
@@ -61,58 +63,77 @@ public class Client extends TransmitInfo{
 		setNextFrameExpected(0);
 		setAckExpected(0);
 		for(int i = 0; i < message.length; i++) {
+			//接收
 			Frame f = new Frame();
 			String tmp = receiveInfo();
+			//System.out.println("the tmp is" + tmp);
 			String[] info = tmp.split("-"); 
+			
+//			for (String line : info) {
+//				System.out.println(line);
+//			}
+//			for(int z =0; z < info.length; i++) {
+//				
+//			}
 			if(event == EventType.cksum_err) {
 				System.out.println("数据串传输出现错误\n");
 			}else {
-				f.setSeq(Integer.getInteger(info[0]).intValue());
-				f.setAck(Integer.getInteger(info[1]).intValue());
+				f.setSeq(Integer.parseInt(info[0]));
+				f.setAck(Integer.parseInt(info[1]));
 				f.setInfo(info[2]);
 				if(f.getSeq() == getNextFrameExpected()) {
 //					sendInfoToNetworkLayer(f.getInfo());
 					incExpected();
+					incAck();
 				}
-				while(between(getAckExpected(), f.getAck(), getNextFrameToSend())) {
-					Nbuffered = Nbuffered - 1;
-					//this.stopTimer();
-					incExpected();
-//				}
+				
+//				while(between(getAckExpected(), f.getAck(), getNextFrameToSend())) {
+//					Nbuffered = Nbuffered - 1;
+//					//this.stopTimer();
+//					incExpected();
+////				}
+				
 				printReceiveInfo(f);
-			}
-			//发送
+				}
 			getInfoFromNetworkLayer(message[i]);
 			//sendInfo(getSendMessage());
 			printSendInfo();
 			//接收
 			
 			}
+		socket.close();
 		}
 			
 		
 			
 			
 	
-	}
+	
 	private static void printSendInfo() {
-		System.out.println("此时期待的确认序号为 " + getAckExpected() +", 下一发送帧号为 " + getNextFrameToSend() + ", 期待帧号为 " + getNextFrameExpected() );
+		System.out.println("当前发送的帧号为 " +(getNextFrameToSend()-1) +",期待的确认序号为 " + (getAckExpected()) +", 期待的对方下一帧号为 " + getNextFrameToSend() + ", 期待帧号为 " + getNextFrameExpected() );
 	}
-    private static void printReceiveInfo(Frame f) {
-    	System.out.println("接收帧的发送序号为 " + f.getSeq() + ", 确认序号为 " + f.getAck() +", 当前期待帧为 " + getNextFrameExpected());
+	private static void printReceiveInfo(Frame f) {
+    	System.out.println("接收帧的发送序号为 " + f.getSeq() + ", 确认序号为 " + f.getAck() +", 当前期待帧为 " + getNextFrameExpected() + ",当前接收信息为 " + f.getInfo());
     	
     }
-	public static void sendInfo(String s) throws IOException {
+	public static void sendInfo(Frame f) throws IOException {
 		DatagramPacket packet;
+		String s = "";
 		StringBuffer strbuff = new StringBuffer();
+		s +=  f.getSeq()  + f.getAck()   +f.getInfo();
+		//System.out.println("String is " + s);
 		strbuff.append(s);
+		//System.out.println("string byte is " + s.toString());
 		String remainder = Crc.crc_remainder(strbuff);
-		strbuff.append(remainder);
-		if(ip == null ) {
-			packet = new DatagramPacket(strbuff.toString().getBytes(), strbuff.length(), InetAddress.getByName("localhost"), 8800);
-		}else{
-			 packet = new DatagramPacket(strbuff.toString().getBytes(), s.length(), ip, port);
-		}
+		//System.out.println("the remainder is " + remainder);
+		String tmp = "" + f.getSeq() + "-" + f.getAck() + "-" + f.getInfo() + "-" + remainder;
+		StringBuffer sb = new StringBuffer(tmp);
+//		strbuff.append("-" + remainder);
+		///System.out.println("the strbuff is "+ sb.toString());
+		packet = new DatagramPacket(sb.toString().getBytes(), sb.length(), InetAddress.getLocalHost(), 9999);
+//		}else{
+//			 packet = new DatagramPacket(strbuff.toString().getBytes(), s.length(), ip, port);
+//		}
 		
 		socket.send(packet);
 		
@@ -126,7 +147,7 @@ public class Client extends TransmitInfo{
 		ip = packet.getAddress();
 		port = packet.getPort();
 		
-		StringBuffer tmp = new StringBuffer(new String(packet.getData()));
+		StringBuffer tmp = new StringBuffer(new String(packet.getData()));				
 		String check = Crc.crc_check(tmp);
 		int pos = check.indexOf("1");
 		if(pos == -1) {
@@ -158,7 +179,7 @@ public class Client extends TransmitInfo{
 	}
 	private static void sendData(int NextSend, int NextExpected,Packet buffer[]) throws IOException {
 		Frame s = new Frame();
-		
+		//System.out.println("nextSend " + NextSend + ", Expected " + NextExpected);
 		s.setInfo(buffer[NextSend]);
 		s.setSeq(NextSend);
 		s.setAck((NextExpected + getMax_SEQ())%(getMax_SEQ()+1));
@@ -166,9 +187,11 @@ public class Client extends TransmitInfo{
 		//this.startTimer(NextSend);
 	}
 	public static void sendInfoToPhysicalLayer(Frame f) throws IOException {
-		String info = "";
-		info += f.getSeq() + "-" + f.getAck() + "-" +f.getInfo();
-		sendInfo(info);
+//		String info = "";
+//		info +=  f.getSeq() + "-" + f.getAck()  +"-" +f.getInfo();
+//		
+//		System.out.println("send info is " + info);
+		sendInfo(f);
 		
 	}
 //	public void getInfoFromPhysicalLayer(Frame f) throws IOException {
@@ -284,11 +307,11 @@ public class Client extends TransmitInfo{
 			setNextFrameExpected(0);
 		}
 	}
-	public void incAck() {
-		if(this.getAckExpected() < this.getMax_SEQ()) {
-			this.setAckExpected(this.getAckExpected() + 1);
+	public static void incAck() {
+		if(getAckExpected() < getMax_SEQ()) {
+			setAckExpected(getAckExpected() + 1);
 		}else {
-			this.setAckExpected(0);
+			setAckExpected(0);
 		}
 	}
 
