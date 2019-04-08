@@ -4,21 +4,21 @@
 #include"readConfigFile.h"
 using namespace std;
 
-//Ê®Áù½øÖÆÒì»òÔËËã// 
+//åå…­è¿›åˆ¶å¼‚æˆ–è¿ç®—// 
 
-//ASCIIÂëÖĞ½«×Ö·û×ª»»³É¶ÔÓ¦µÄÊ®½øÖÆÊı
+//ASCIIç ä¸­å°†å­—ç¬¦è½¬æ¢æˆå¯¹åº”çš„åè¿›åˆ¶æ•°
 int char2int( char input )
 {
     return input>64?(input-55):(input-48);
 }
 
-//ASCIIÂëÖĞ½«Ê®½øÖÆÊı×ª»»³É¶ÔÓ¦µÄ×Ö·û
+//ASCIIç ä¸­å°†åè¿›åˆ¶æ•°è½¬æ¢æˆå¯¹åº”çš„å­—ç¬¦
 int int2char( char input )
 {
     return input>9?(input+55):(input+48);
 }
 
-//½«Ê®Áù½øÖÆ×Ö·û´®HexStr1ºÍHexStr2Òì»òµÃµ½HexStr
+//å°†åå…­è¿›åˆ¶å­—ç¬¦ä¸²HexStr1å’ŒHexStr2å¼‚æˆ–å¾—åˆ°HexStr
 void hexstrxor(string Str1, string Str2, char * HexStr )
 {
 	
@@ -30,13 +30,13 @@ void hexstrxor(string Str1, string Str2, char * HexStr )
     iHexStr1Len = strlen( HexStr1 );
     iHexStr2Len = strlen( HexStr2 );
 
-    //»ñÈ¡×îĞ¡µÄ³¤¶È
+    //è·å–æœ€å°çš„é•¿åº¦
     iHexStrLenLow = iHexStr1Len<iHexStr2Len?iHexStr1Len:iHexStr2Len;
 
-    //»ñÈ¡³¤¶È²îÖµ
+    //è·å–é•¿åº¦å·®å€¼
     iHexStrLenGap = abs( iHexStr1Len-iHexStr2Len );
 
-    //Á½¸öÊ®Áù½øÖÆµÄ×Ö·û´®½øĞĞÒì»ò
+    //ä¸¤ä¸ªåå…­è¿›åˆ¶çš„å­—ç¬¦ä¸²è¿›è¡Œå¼‚æˆ–
     for( i=0; i<iHexStrLenLow; i++ )
     {
         *(HexStr+i) = char2int( HexStr1[i] ) ^ char2int( HexStr2[i] );
@@ -49,32 +49,32 @@ void hexstrxor(string Str1, string Str2, char * HexStr )
     *( HexStr+iHexStrLenLow+iHexStrLenGap ) = 0x00;
 }
 
-//×Ö½ÚÌî³ä²¿·Ö 
+//å­—èŠ‚å¡«å……éƒ¨åˆ† 
 
-//'7D'Ìæ»»Îª'7D5D'
+//'7D'æ›¿æ¢ä¸º'7D5D'
 string convert_7D(string str){
 	string tmp = str;
 	int count = 0;
 	int begin = -1;
-	//ÕÒµ½ËùÓĞ°üº¬"7D"µÄÆğÊ¼Î»ÖÃ£¬²¢ÔÚºóÃæ²åÈë"5D" 
+	//æ‰¾åˆ°æ‰€æœ‰åŒ…å«"7D"çš„èµ·å§‹ä½ç½®ï¼Œå¹¶åœ¨åé¢æ’å…¥"5D" 
 	while((begin=str.find("7D",begin+1))!=string::npos)
 	{
 		count++;
-		//Ã¿´Î²åÈë2¸ö×Ö·ûÖ®ºó£¬ÏÂÒ»´Î²åÈëÏòºóÒÆ¶¯Á½¸öÎ»ÖÃ	
+		//æ¯æ¬¡æ’å…¥2ä¸ªå­—ç¬¦ä¹‹åï¼Œä¸‹ä¸€æ¬¡æ’å…¥å‘åç§»åŠ¨ä¸¤ä¸ªä½ç½®	
     	tmp = tmp.insert(begin+2*count,"5D");
 	}
 	return tmp;
 }
 
-//'7E'Ìæ»»Îª'7D5E' 
+//'7E'æ›¿æ¢ä¸º'7D5E' 
 string convert_7E(string str){
 	string tmp = str;
 	int count = 0;
 	int begin = -1;
-	//ÕÒµ½ËùÓĞ°üº¬"7D"µÄÆğÊ¼Î»ÖÃ£¬½«"7D"´úÌæÎª"7D5E"
+	//æ‰¾åˆ°æ‰€æœ‰åŒ…å«"7D"çš„èµ·å§‹ä½ç½®ï¼Œå°†"7D"ä»£æ›¿ä¸º"7D5E"
 	while((begin=str.find("7E",begin+1))!=string::npos)
 	{
-		//½«begin¿ªÊ¼µÄÁ½¸ö×Ö·ûÓÃ"7D5E"´úÌæ	 
+		//å°†beginå¼€å§‹çš„ä¸¤ä¸ªå­—ç¬¦ç”¨"7D5E"ä»£æ›¿	 
     	tmp = tmp.replace(begin+2*count,2,"7D5E");
     	count++;
 	}
@@ -82,24 +82,24 @@ string convert_7E(string str){
 }
 
 
-//Ğ¡ÓÚ20µÄ×Ö·û£¬1X,0X¶¼ĞèÒªÓë20×÷Òì»òÔËËã£¬µÃ³ö½á¹ûXX£¬Ç°ÃæÔÙ¼ÓÉÏ7D 
+//å°äº20çš„å­—ç¬¦ï¼Œ1X,0Xéƒ½éœ€è¦ä¸20ä½œå¼‚æˆ–è¿ç®—ï¼Œå¾—å‡ºç»“æœXXï¼Œå‰é¢å†åŠ ä¸Š7D 
 
-//'1X'Ìæ»»Îª'7DXX',XXÎª'1X'Óë'20'Òì»òµÄ½á¹û
+//'1X'æ›¿æ¢ä¸º'7DXX',XXä¸º'1X'ä¸'20'å¼‚æˆ–çš„ç»“æœ
 string convert_1X(string str){
 	string tmp = str;
 	int count = 0;
 	int begin = -1;
-	//ÕÒµ½ËùÓĞ°üº¬"1"µÄÆğÊ¼Î»ÖÃ£¬½«"1X"Óë"20"×÷Òì»òÔËËã´ú
+	//æ‰¾åˆ°æ‰€æœ‰åŒ…å«"1"çš„èµ·å§‹ä½ç½®ï¼Œå°†"1X"ä¸"20"ä½œå¼‚æˆ–è¿ç®—ä»£
 	while((begin=str.find("1",begin+1))!=string::npos){
-		//Ã¿Á½¸ö×Ö·û½øĞĞÒ»´ÎÌáÈ¡£¬ÀıÈç1110£¬Ö»ĞèÌáÈ¡11ºÍ10 
+		//æ¯ä¸¤ä¸ªå­—ç¬¦è¿›è¡Œä¸€æ¬¡æå–ï¼Œä¾‹å¦‚1110ï¼Œåªéœ€æå–11å’Œ10 
 	 	if(begin%2==0){		
 	 		char result[5]={0};
-	 		//ÌáÈ¡beginÎ»ÖÃµÄÁ½¸ö×Ö·ûÓë20×÷Òì»òÔËËãµÃµ½½á¹ûXX 
+	 		//æå–beginä½ç½®çš„ä¸¤ä¸ªå­—ç¬¦ä¸20ä½œå¼‚æˆ–è¿ç®—å¾—åˆ°ç»“æœXX 
 		    hexstrxor( str.substr(begin,2), "20", result );	
-		    // ½á¹ûÎª7DXX 
+		    // ç»“æœä¸º7DXX 
 	 		string replace="7D";
 	 		replace = replace.append(result);
-	 		//Ìæ»»Ô­À´µÄ×Ö·û 
+	 		//æ›¿æ¢åŸæ¥çš„å­—ç¬¦ 
 			tmp=tmp.replace(begin+2*count,2,replace);
 			count++;
 		} 
@@ -107,7 +107,7 @@ string convert_1X(string str){
 	return tmp;
 } 
 
-//'0X'Ìæ»»Îª'7DXX',XXÎª'0X'Óë'20'Òì»òµÄ½á¹û£¬Í¬ÉÏ 
+//'0X'æ›¿æ¢ä¸º'7DXX',XXä¸º'0X'ä¸'20'å¼‚æˆ–çš„ç»“æœï¼ŒåŒä¸Š 
 string convert_0X(string str){
 	string tmp = str;
 	int count = 0;
@@ -127,7 +127,7 @@ string convert_0X(string str){
 }
 
 string Byte_Fill(string str){
-	//×¢ÒâÏÈ×ª»»7D 
+	//æ³¨æ„å…ˆè½¬æ¢7D 
 	string str1=convert_7D(str);
 	string str2=convert_7E(str1);
 	string str3=convert_1X(str2);
@@ -144,26 +144,26 @@ int main(int argc,char* argv[]){
 		ini_path=argv[1];
 	}
 	readConfigFile(ini_path,"InfoString",InfoString);
-	cout<<"-------------¶ÁÈ¡ÅäÖÃÎÄ¼şÖĞ´ı·¢ËÍµÄÊı¾İĞÅÏ¢-----"<<endl;
+	cout<<"-------------è¯»å–é…ç½®æ–‡ä»¶ä¸­å¾…å‘é€çš„æ•°æ®ä¿¡æ¯-----"<<endl;
 	cout<<InfoString<<endl;
-	//×Ö½ÚÌî³ä 
-	cout<<"-------------×Ö½ÚÌî³äÖ®ºóµÄÊı¾İĞÅÏ¢-------------"<<endl;
+	//å­—èŠ‚å¡«å…… 
+	cout<<"-------------å­—èŠ‚å¡«å……ä¹‹åçš„æ•°æ®ä¿¡æ¯-------------"<<endl;
 	string Fill_string = Byte_Fill(InfoString); 
 	cout<<Fill_string<<endl;
-	cout<<"-------------Ö¡Ê×²¿µÄËÄ²¿·Ö---------------------"<<endl;
-	cout<<"Ö¡ÆğÊ¼±êÖ¾:7E  "<<"A:FF  "<<"C:03  "<<"Ğ­Òé£º0021 »ò C021 »ò 8021"<<endl;
-	cout<<"-------------Ö¡Î²²¿µÄÁ½²¿·Ö---------------------"<<endl;
-	cout<<"FCS:XX  "<<"Ö¡½áÊø±êÖ¾£º7E"<<endl; 
-    cout<<"-------------×Ö½ÚÌî³äºóµÄ·¢ËÍÖ¡Îª---------------"<<endl;
-    cout<<"ÈôÎªIPÊı¾İ±¨£º                "<<"7E FF 03 0021 "<<Fill_string<<" XX"<<" 7E"<<endl;
-    cout<<"ÈôÎªpppÁ´Â·¿ØÖÆĞ­ÒéLCPµÄÊı¾İ£º"<<"7E FF 03 C021 "<<Fill_string<<" XX"<<" 7E"<<endl;
-    cout<<"ÈôÎªÍøÂç²ãµÄ¿ØÖÆÊı¾İ£º        "<<"7E FF 03 8021 "<<Fill_string<<" XX"<<" 7E"<<endl;
-    cout<<"-------------×Ö½ÚÉ¾³ıºóµÄ½ÓÊÕÖ¡Îª---------------"<<endl;
-    cout<<"ÈôÎªIPÊı¾İ±¨£º                "<<"7E FF 03 0021 "<<InfoString<<" XX"<<" 7E"<<endl;
-    cout<<"ÈôÎªpppÁ´Â·¿ØÖÆĞ­ÒéLCPµÄÊı¾İ£º"<<"7E FF 03 C021 "<<InfoString<<" XX"<<" 7E"<<endl;
-    cout<<"ÈôÎªÍøÂç²ãµÄ¿ØÖÆÊı¾İ£º        "<<"7E FF 03 8021 "<<InfoString<<" XX"<<" 7E"<<endl;
+	cout<<"-------------å¸§é¦–éƒ¨çš„å››éƒ¨åˆ†---------------------"<<endl;
+	cout<<"å¸§èµ·å§‹æ ‡å¿—:7E  "<<"A:FF  "<<"C:03  "<<"åè®®ï¼š0021 æˆ– C021 æˆ– 8021"<<endl;
+	cout<<"-------------å¸§å°¾éƒ¨çš„ä¸¤éƒ¨åˆ†---------------------"<<endl;
+	cout<<"FCS:XX  "<<"å¸§ç»“æŸæ ‡å¿—ï¼š7E"<<endl; 
+    cout<<"-------------å­—èŠ‚å¡«å……åçš„å‘é€å¸§ä¸º---------------"<<endl;
+    cout<<"è‹¥ä¸ºIPæ•°æ®æŠ¥ï¼š                "<<"7E FF 03 0021 "<<Fill_string<<" XX"<<" 7E"<<endl;
+    cout<<"è‹¥ä¸ºpppé“¾è·¯æ§åˆ¶åè®®LCPçš„æ•°æ®ï¼š"<<"7E FF 03 C021 "<<Fill_string<<" XX"<<" 7E"<<endl;
+    cout<<"è‹¥ä¸ºç½‘ç»œå±‚çš„æ§åˆ¶æ•°æ®ï¼š        "<<"7E FF 03 8021 "<<Fill_string<<" XX"<<" 7E"<<endl;
+    cout<<"-------------å­—èŠ‚åˆ é™¤åçš„æ¥æ”¶å¸§ä¸º---------------"<<endl;
+    cout<<"è‹¥ä¸ºIPæ•°æ®æŠ¥ï¼š                "<<"7E FF 03 0021 "<<InfoString<<" XX"<<" 7E"<<endl;
+    cout<<"è‹¥ä¸ºpppé“¾è·¯æ§åˆ¶åè®®LCPçš„æ•°æ®ï¼š"<<"7E FF 03 C021 "<<InfoString<<" XX"<<" 7E"<<endl;
+    cout<<"è‹¥ä¸ºç½‘ç»œå±‚çš„æ§åˆ¶æ•°æ®ï¼š        "<<"7E FF 03 8021 "<<InfoString<<" XX"<<" 7E"<<endl;
     
-    cout<<"-------------°´ÈÎÒâ¼üÍË³ö³ÌĞò-------------------"<<endl;
+    cout<<"-------------æŒ‰ä»»æ„é”®é€€å‡ºç¨‹åº-------------------"<<endl;
     getchar();
     return 0;
 } 
