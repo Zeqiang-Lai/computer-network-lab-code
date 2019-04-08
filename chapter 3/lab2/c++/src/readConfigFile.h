@@ -5,22 +5,22 @@ using namespace std;
 string readConfigFile(const char * cfgfilepath, const string & key, string & value)
 {
     fstream cfgFile;
-    cfgFile.open(cfgfilepath);//´ò¿ªÎÄ¼þ	
+    cfgFile.open(cfgfilepath);//æ‰“å¼€æ–‡ä»¶
     if( ! cfgFile.is_open())
     {
         cout<<"can not open cfg file!"<<endl;
     }
     char tmp[1000];
-    while(!cfgFile.eof())//Ñ­»·¶ÁÈ¡Ã¿Ò»ÐÐ
+    while(!cfgFile.eof())//å¾ªçŽ¯è¯»å–æ¯ä¸€è¡Œ
     {
-        cfgFile.getline(tmp,1000);//Ã¿ÐÐ¶ÁÈ¡Ç°1000¸ö×Ö·û£¬1000¸öÓ¦¸Ã×ã¹»ÁË
+        cfgFile.getline(tmp,1000);//æ¯è¡Œè¯»å–å‰1000ä¸ªå­—ç¬¦ï¼Œ1000ä¸ªåº”è¯¥è¶³å¤Ÿäº†
         string line(tmp);
-        size_t pos = line.find('=');//ÕÒµ½Ã¿ÐÐµÄ¡°=¡±ºÅÎ»ÖÃ£¬Ö®Ç°ÊÇkeyÖ®ºóÊÇvalue
+        size_t pos = line.find('=');//æ‰¾åˆ°æ¯è¡Œçš„â€œ=â€å·ä½ç½®ï¼Œä¹‹å‰æ˜¯keyä¹‹åŽæ˜¯value
         if(pos==string::npos) return NULL;
-        string tmpKey = line.substr(0,pos);//È¡=ºÅÖ®Ç°
+        string tmpKey = line.substr(0,pos);//å–=å·ä¹‹å‰
         if(key==tmpKey)
         {
-            value = line.substr(pos+1);//È¡=ºÅÖ®ºó
+            value = line.substr(pos+1);//å–=å·ä¹‹åŽ
 			return value;
         }
     }
