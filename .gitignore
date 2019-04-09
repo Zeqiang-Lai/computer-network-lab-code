@@ -3,5 +3,6 @@
 *.docx
 chapter3/doc/*
 */*/*/bin/*
+!*/*/*/bin/*.ini
 *.class
 *.o
