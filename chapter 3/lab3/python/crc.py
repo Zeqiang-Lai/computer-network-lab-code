@@ -37,8 +37,9 @@ def crc_check(input_string,poly):
 def read_configuration(file_path):
     f=open(file_path,'r')
     list=f.readlines()
-    return list
     f.close()
+    return list
+
 
 def index_of_str(s1, s2):
    n= len(s1)
