@@ -43,7 +43,7 @@ string crc_remainder(string input_bitstring, string poly)
 string crc_check(string input_bitstring, string poly)
 {
     int len_poly = poly.length();
-    int len_input = input_bitstring.length() - len_poly;
+    int len_input = input_bitstring.length() - len_poly+1;
     string padded_input = input_bitstring;
 
     // long division
