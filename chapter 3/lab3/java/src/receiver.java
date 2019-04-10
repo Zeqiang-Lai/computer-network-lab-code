@@ -5,7 +5,7 @@ public class receiver{
     //定义用于通讯的端口是888
 private static final int PORT=8888;
 
-public static void Main(String[] args)throws IOException
+public static void main(String[] args)throws IOException
         {
             //定义要发送的语句
 

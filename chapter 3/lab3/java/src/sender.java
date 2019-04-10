@@ -4,7 +4,7 @@ import java.io.*;
 public class sender {
     private static final int TIMEOUT = 5000;  //设置接收数据的超时时间
     private static final int PORT= 8888;//监听和发送的端口
-    public static void Main(String args[])throws IOException{
+    public static void main(String args[])throws IOException{
 
         String str_send = "Hello UDPserver";
         byte[] buf = new byte[1024];
