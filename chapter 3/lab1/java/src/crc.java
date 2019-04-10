@@ -39,7 +39,7 @@ public class crc
     {
 
         int len_poly = poly.length();
-        int len_input = input_bitstring.length()-len_poly;
+        int len_input = input_bitstring.length()-len_poly+1;
         StringBuffer padded_input = input_bitstring;
 
         for(int j=0;j<len_input;++j)

@@ -22,7 +22,7 @@ def crc_remainder(input_string,poly):
 
 def crc_check(input_string,poly):
     len_poly = len(poly)
-    len_input = len(input_string)-len_poly
+    len_input = len(input_string)-len_poly+1
 
     padded_input = input_string
     for i in range(0, len_input, 1):
