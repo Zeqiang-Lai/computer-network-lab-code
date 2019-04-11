@@ -17,25 +17,25 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.bind(ip_port)
 print('Bind UDP on %d...'%port)
 frame_expect=0
-count=0#用于模拟帧出错的计数器
+# count=0#用于模拟帧出错的计数器
 while True:
-    count=(count+1)%framerro
+    # count=(count+1)%framerro
     #接受数据并解析
+    print('---------------------')
     frame, addr=s.recvfrom(1024)
     frame=struct.unpack('h100s', frame)
     if frame[0]==frame_expect:
         data=str(frame[1], 'utf-8').replace('\0', '')
-        if count==framerro-1:#每framerro次模拟一次出错,可以是改变接受数据的某一位
-            ans = list(data)
-            ans[1] = crc.XOR(ans[1], "1")
-            data = ''.join(ans)
-        print('收到编号:' + str(frame[0]) + ',帧内容:' + data)
+        print("Frame expected=%d"%frame_expect)
+        print('Checking...')
         if int(crc.crc_check(data,poly))==0:#正确返回ACK并修改frame_expect
             ack = struct.pack('h3s', frame_expect, b'ACK')
+            print('Valid:Frame[%d]'% frame[0])
+            print('sending ACK[%d]'%frame_expect)
             s.sendto(ack, addr)
             frame_expect = 1 - frame_expect
-        else:#错误返回NAK并显示CRC校验余数
+        else:#错误,显示CRC校验余数
             nak = struct.pack('h3s', frame_expect, b'NAK')
-            s.sendto(nak, addr)
-            print("帧出错,CRC校验余数:"+crc.crc_check(data,poly))
+            # s.sendto(nak, addr)
+            print("Invalid:CRC=["+crc.crc_check(data,poly)+"]")
 
