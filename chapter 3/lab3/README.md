@@ -30,6 +30,11 @@ Sending State:         Lost
 Receiving...
 Receiving State:       Timeout
 ---------------------------------
+Next frame to send:    1
+Sending State:         Error
+Receiving...
+Receiving State:       Timeout
+---------------------------------
 ```
 
 ### Receiver
