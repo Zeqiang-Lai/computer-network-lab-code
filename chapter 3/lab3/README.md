@@ -6,6 +6,35 @@ Java实现：同上。
 
 Python实现：李安腾 张诗意
 
+## 输出格式
+
+```
+Next frame to send:    [number]
+     Sending State:    normal | lose | error
+   Receiving State:    Ack[number]   | Timeout
+```
+
+例子：
+
+```
+Next frame to send:    0
+     Sending State:    normal 
+   Receiving State:    Ack1
+---------------------------------
+Next frame to send:    0
+     Sending State:    lose 
+   Receiving State:    Ack1
+---------------------------------
+Next frame to send:    0
+     Sending State:    error 
+   Receiving State:    Ack1
+---------------------------------
+Next frame to send:    0
+     Sending State:    normal 
+   Receiving State:    Timeout
+---------------------------------
+```
+
 ## C++
 
 ### 编译说明
