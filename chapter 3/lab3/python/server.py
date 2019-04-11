@@ -32,7 +32,7 @@ while True:
             print('return ACK%d'%frame_expect)
             s.sendto(ack, addr)
             frame_expect = 1 - frame_expect
-        else:#错误,显示CRC校验余数
+        else:#错误则显示CRC校验余数
             nak = struct.pack('h3s', frame_expect, b'NAK')
             # s.sendto(nak, addr)
             print("frame error,CRC remainder:"+crc.crc_check(data,poly))

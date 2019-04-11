@@ -5,9 +5,7 @@ import  threading
 import  crc
 import time
 import random
-'''
-客户端使用UDP时，首先仍然创建基于UDP的Socket，然后，不需要调用connect()，直接通过sendto()给服务器发数据：
-'''
+
 def send_repeat(seq,data,ip_addr):#处理重传
     print('time_out!')
     print("retransmit frame %d"%seq)
