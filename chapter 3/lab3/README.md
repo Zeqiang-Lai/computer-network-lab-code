@@ -8,30 +8,50 @@ Python实现：李安腾 张诗意
 
 ## 输出格式
 
+### Sender
+
 ```
 Next frame to send:    [number]
-     Sending State:    normal | lose | error
-   Receiving State:    Ack[number]   | Timeout
+Sending State:         Normal | Lost | Error
+Receiving...
+Receiving State:       Ack[number]   | Timeout
 ```
 
 例子：
 
 ```
 Next frame to send:    0
-     Sending State:    normal 
-   Receiving State:    Ack1
+Sending State:         normal
+Receiving...
+Receiving State:       Ack1
 ---------------------------------
-Next frame to send:    0
-     Sending State:    lose 
-   Receiving State:    Ack1
+Next frame to send:    1
+Sending State:         Lost
+Receiving...
+Receiving State:       Timeout
 ---------------------------------
-Next frame to send:    0
-     Sending State:    error 
-   Receiving State:    Ack1
+```
+
+### Receiver
+
+```
+Frame expected: [number]
+Checking...
+Invalid: CRC = [number]  | Valid: Frame[number]
+Sending ACK[number]
+```
+
+例子：
+
+```
+Frame expected: 1
+Checking...
+Valid: Frame[1]
+Sending ACK[1]
 ---------------------------------
-Next frame to send:    0
-     Sending State:    normal 
-   Receiving State:    Timeout
+Frame expected: 2
+Checking...
+Invalid: CRC = [1001112]         // invalid就没有send ack了
 ---------------------------------
 ```
 
