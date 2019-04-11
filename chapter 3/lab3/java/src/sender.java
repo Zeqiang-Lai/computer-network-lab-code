@@ -1,45 +1,96 @@
-import java.net.*;
-import java.io.*;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 public class sender {
-    private static final int TIMEOUT = 5000;  //设置接收数据的超时时间
+    final private static String TAG = "SocketUdp: ";
+    private static final int TIMEOUT = 50000;  //设置接收数据的超时时间
     private static final int PORT= 8888;//监听和发送的端口
-    public static void main(String args[])throws IOException{
-
-        String str_send = "Hello UDPserver";
-        byte[] buf = new byte[1024];
-        //sender在8888端口监听接收到的数据
-        DatagramSocket ds = new DatagramSocket(PORT);
-        //定义发送的地址为自己
-        InetAddress loc = InetAddress.getLocalHost();
-        //定义用来发送数据的DatagramPacket实例
-        DatagramPacket dp_send= new DatagramPacket(str_send.getBytes(),str_send.length(),loc,PORT);
-        //定义用来接收数据的DatagramPacket实例
-        DatagramPacket dp_receive = new DatagramPacket(buf, 1024);
-        //数据发向本地8888端口
-        ds.setSoTimeout(TIMEOUT);              //设置接收数据时阻塞的最长时间
+    private static final int FRAME_SIZE=10;//
+    public static void main(String args[])
+    {
+        //从文件中读取一行
+        String message_to_send="test message 1";
+        //将读到的一行转化为二进制数字
+        byte[] message_byte_stream=message_to_send.getBytes();
+        //计算需要切分为多少帧
+        int frame_amount=message_byte_stream.length/FRAME_SIZE;
+        //定义一个计数器，判断是否计算完毕
+        int sended_amout=0;
         while(true)
         {
-            //发送当前帧直到接收到正确的ack，或者重发次数达到预定值，则退出循环
-            while (true)
+
+            while(true)
             {
-                //发送数据
-                ds.send(dp_send);
-                    //接收从服务端发送回来的数据
-                    ds.receive(dp_receive);
-                    //如果接收到的ack等于1则结束循环
-                    if (dp_receive.getData().equals(1))
+                try {
+                    //socket 客户端
+                    DatagramSocket getSocket = new DatagramSocket();
+                    //设置接收数据时阻塞的最长时间
+                    getSocket.setSoTimeout(TIMEOUT);
+                    //定义发送和接收的socket包
+                    DatagramPacket datapacket_send = null;
+                    DatagramPacket datapacket_receive = null;
+                    //需要发送的地址，这里是本地发本地
+                    InetSocketAddress toAddress = new InetSocketAddress(InetAddress.getLocalHost(), PORT);
+
+
+                    String sendStr = "I'm sender, this is the message for receiver.";
+                    byte buf_send[] = sendStr.getBytes();
+                    byte buf_receive[]=new byte[1024];
+                    datapacket_send = new DatagramPacket(buf_send, buf_send.length);
+                    datapacket_send.setSocketAddress(toAddress);
+                    getSocket.send(datapacket_send);
+                    System.out.println("消息已经发送");
+
+
+
+                    System.out.println("等待接收ack...");
+                    datapacket_receive = new DatagramPacket(buf_receive, buf_receive.length);
+                    getSocket.receive(datapacket_receive);
+                    String ack_receive=new String(buf_receive);
+                    //如果接收ack成功
+                    if(ack_receive.equals("true"))
                     {
+                        System.out.println("ack的内容: " + ack_receive);
                         //更新一帧需要发送的信息
-                        str_send="next_frame";
-                        dp_send.setData(str_send.getBytes());
+                        sendStr="next_frame";
+                        datapacket_send.setData(sendStr.getBytes());
+                        sended_amout++;
                         break;
                     }
-                    //重置dp_receive
-                    dp_receive.setLength(1024);
+                    //如果接收ack失败
+                    else
+                        {
+                            System.out.println("ack与期望不符，重发当前帧");
+                            System.out.println("ack的内容: " + ack_receive);
+
+                    }
+                    //关闭socket客户端
+                    getSocket.close();
+                } catch (SocketException e) {
+                    System.out.println(TAG + e.getMessage());
+
+                    e.printStackTrace();
+                } catch (UnknownHostException e) {
+                    System.out.println(TAG + e.getMessage());
+
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    //System.out.println(TAG + e.getMessage());
+                    System.out.println("接收ack超时，重新发送一帧");
+                    //e.printStackTrace();
+                }
+
             }
-            //如果发送的是最后一帧，则推出循环
+            if(sended_amout==1)
+            {
+                System.out.println("传输完毕");
+            }
         }
-        //ds.close();
     }
 }
