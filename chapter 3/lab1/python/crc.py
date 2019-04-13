@@ -1,9 +1,16 @@
 import sys
+'''
+return '0' if a==b, otherwise '1'.
+'''
 def XOR(a,b):
     if a==b:
         return '0'
     else:
         return '1'
+'''
+computer remainder of the input bit string.
+@return string, remainder.
+'''
 def crc_remainder(input_string,poly):
     len_poly = len(poly)
     len_input = len(input_string)
@@ -19,10 +26,14 @@ def crc_remainder(input_string,poly):
                 l[j] = XOR(l[j], poly[j - i])
                 padded_input=''.join(l)
     return padded_input[len_input:len_poly+len_input]
-
+'''
+check crc code of input bit string.
+@return string, remainder of input bit string. if it contains no '1', 
+it means that the input bit string is valid.
+'''
 def crc_check(input_string,poly):
     len_poly = len(poly)
-    len_input = len(input_string)-len_poly
+    len_input = len(input_string)-len_poly+1
 
     padded_input = input_string
     for i in range(0, len_input, 1):

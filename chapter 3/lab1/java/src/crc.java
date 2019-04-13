@@ -5,10 +5,17 @@ import java.lang.*;
 import java.io.*;
 public class crc
 {
+       /**
+        * return '0' if a==b, otherwise '1'.
+        */
        public static char XOR(char a,char b)
        {
            return a==b?'0':'1';
        }
+       /**
+        * computer remainder of the input bit string.
+        * @return string, remainder.
+        */
        static String crc_remainder(StringBuffer input_bitstring,StringBuffer poly)//crc码的生成程序
        {
            int len_input = input_bitstring.length();
@@ -35,27 +42,32 @@ public class crc
             }
             return padded_input.substring(len_input,len_input+len_poly-1);
        }
-    static String crc_check(StringBuffer input_bitstring,StringBuffer poly)//crc码的生成程序
-    {
+       /**
+        * check crc code of input bit string.
+        * @return string, remainder of input bit string. if it contains no '1', 
+        * it means that the input bit string is valid.
+        */
+       static String crc_check(StringBuffer input_bitstring,StringBuffer poly)//crc码的生成程序
+       {
 
-        int len_poly = poly.length();
-        int len_input = input_bitstring.length()-len_poly;
-        StringBuffer padded_input = input_bitstring;
+           int len_poly = poly.length();
+           int len_input = input_bitstring.length()-len_poly+1;
+           StringBuffer padded_input = input_bitstring;
 
-        for(int j=0;j<len_input;++j)
-        {
-            if(padded_input.charAt(j)=='0')
-            {
-                continue;
-            }
-            for(int k=j;k<j+len_poly;++k)
-            {
-                padded_input.setCharAt(k,XOR(padded_input.charAt(k),poly.charAt(k-j)));
-            }
+           for(int j=0;j<len_input;++j)
+           {
+               if(padded_input.charAt(j)=='0')
+               {
+                   continue;
+               }
+               for(int k=j;k<j+len_poly;++k)
+               {   
+                   padded_input.setCharAt(k,XOR(padded_input.charAt(k),poly.charAt(k-j)));
+               }
 
-        }
-        return padded_input.toString();
-    }
+           }
+           return padded_input.toString();
+       }
        public static StringBuffer read_configuration(String file_path)throws Exception//从ini文件中读取多项式
        {
            StringBuffer sb=new StringBuffer();
@@ -73,7 +85,7 @@ public class crc
                System.out.println("Error: configuration file not found.");
 
            }
-           return sb;//返回读出的所有字符
+           return sb;
        }
        public static  void show_check_example(StringBuffer bit_string,StringBuffer poly)
        {
