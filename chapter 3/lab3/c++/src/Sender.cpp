@@ -155,9 +155,8 @@ public:
 	void Init_sender(string p) {
 		buffer = p;
 	}
-	string to_physical_layer()
+	string to_physical_layer(CRC& crc)
 	{
-		CRC crc;
 		string frame = "";
 		frame += (next_frame_to_send + '0');
 		frame += buffer;
@@ -213,20 +212,20 @@ void init(CRC& c, UDPSocket& so_send, UDPSocket& so_recv, Sender& s)
 		int sum = 1;
 		for (int j = temp[3].length() - i - 1; j > 0; j--)
 			sum *= 10;
-		send_port += (temp[3][i] - '0')*sum;
+		recv_port += (temp[3][i] - '0')*sum;
 	}
 	for (int i = 0; i < temp[4].length(); i++)
 	{
 		int sum = 1;
 		for (int j = temp[4].length() - i - 1; j > 0; j--)
 			sum *= 10;
-		recv_port += (temp[4][i] - '0')*sum;
+		send_port += (temp[4][i] - '0')*sum;
 	}
 	so_send.initialize(send_port, temp[2].c_str());
 	so_recv.initialize(recv_port, temp[2].c_str());
 	s.Init_sender(temp[1]);
 	filelost = (temp[5][0] - '0') * 10 + (temp[5][1] - '0');
-	frameerror== (temp[6][0] - '0') * 10 + (temp[6][1] - '0');
+	frameerror= (temp[6][0] - '0') * 10 + (temp[6][1] - '0');
 	infile.close();
 }
 
@@ -250,8 +249,9 @@ int main()
 	while (true)
 	{
 		count++;
+		cout << count << endl;
 		char send_frame[FRAME_SIZE], recv_frame[FRAME_SIZE];
-		string send_buf = s.to_physical_layer();
+		string send_buf = s.to_physical_layer(c);
 		if (count % filelost == 3)
 		{
 			cout << "transmission error!" << endl;
@@ -268,7 +268,7 @@ int main()
 		s.from_physical_layer(recv_buf);
 
 		cout << endl;
-		Sleep(1000);
+		Sleep(3000);
 	}
 
 	so_send.close();

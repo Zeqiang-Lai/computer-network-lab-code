@@ -152,11 +152,10 @@ public:
 	Receiver() {
 		frame_expected = 0;
 	}
-	bool from_physical_layer(string bitstring,int len)
+	bool from_physical_layer(string bitstring,int len,CRC& c)
 	{
 		if (bitstring[0] == frame_expected+'0')
 		{
-			CRC c;
 			string temp = c.crc_check(bitstring.substr(1, len - 1));
 			cout << "CRC check: " << temp << endl;
 			for (int i = 0; i < temp.length(); i++)
@@ -228,7 +227,7 @@ void init(CRC& c, UDPSocket& so_send, UDPSocket& so_recv)
 	so_send.initialize(send_port, temp[2].c_str());
 	so_recv.initialize(recv_port, temp[2].c_str());
 	filelost = (temp[5][0] - '0') * 10 + (temp[5][1] - '0');
-	frameerror == (temp[6][0] - '0') * 10 + (temp[6][1] - '0');
+	frameerror = (temp[6][0] - '0') * 10 + (temp[6][1] - '0');
 	infile.close();
 }
 
@@ -245,6 +244,7 @@ int main()
 	while (true)
 	{
 		count++;
+		cout << count << endl;
 		char recv_buf[FRAME_SIZE], recv_frame[FRAME_SIZE], send_frame[FRAME_SIZE];
 		so_recv.recv(recv_frame, FRAME_SIZE);
 		int len;
@@ -255,7 +255,7 @@ int main()
 			for (int i = 0; i < len; i++)
 				cout << recv_buf[i];
 			cout << endl;
-			if (r.from_physical_layer(recv_buf, len))
+			if (r.from_physical_layer(recv_buf, len,c))
 			{
 				string temp = r.to_physical_layer();
 				int l = temp.length();
@@ -275,7 +275,7 @@ int main()
 			Sleep(3000);
 		}
 		cout << endl;
-		Sleep(1000);
+		Sleep(3000);
 	}
 
 	so_send.close();
