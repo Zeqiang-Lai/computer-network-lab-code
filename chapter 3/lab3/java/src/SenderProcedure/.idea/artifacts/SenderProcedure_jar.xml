@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SenderProcedure:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SenderProcedure_jar</output-path>
+    <root id="archive" name="SenderProcedure.jar">
+      <element id="module-output" name="SenderProcedure" />
+    </root>
+  </artifact>
+</component>
