@@ -4,11 +4,12 @@
 #include<iostream>
 #include<fstream>
 using namespace std;
-#pragma comment(lib, "Ws2_32.lib")
 
 const int FRAME_SIZE = 1024;
 int filelost = 0;
 int frameerror = 0;
+
+#pragma comment(lib, "Ws2_32.lib")
 
 inline char XOR(char a, char b)
 {
@@ -19,7 +20,7 @@ class CRC
 {
 public:
 	CRC() {
-		poly = "";
+		poly = "10001000000100001";
 	}
 	void Init_CRC(string p) {
 		poly = p;
@@ -65,13 +66,13 @@ public:
 	int send(const char* buff, int len);
 	int recv(char* buff, int len);
 	int close();
-	SOCKET msocket;
 private:
 	int recv_bind();
 	int isBind;
 	unsigned short port;
 	std::string ipAddr;
 	WSADATA wsaData;
+	SOCKET msocket;
 	sockaddr_in recvAddr;
 	sockaddr_in senderAddr;
 };
@@ -145,40 +146,42 @@ int UDPSocket::recv_bind()
 	return 0;
 }
 
-class Sender
+class Receiver
 {
 public:
-	Sender() {
-		buffer = "";
-		next_frame_to_send = 0;
+	Receiver() {
+		frame_expected = 0;
 	}
-	void Init_sender(string p) {
-		buffer = p;
-	}
-	string to_physical_layer(CRC& crc)
+	bool from_physical_layer(string bitstring,int len,CRC& c)
 	{
-		string frame = "";
-		frame += (next_frame_to_send + '0');
-		frame += buffer;
-		frame += crc.crc_remainder(buffer);
-		return frame;
-	}
-	void from_physical_layer(const char *rec)
-	{
-		if (rec[0] == (next_frame_to_send + '0'))
+		if (bitstring[0] == frame_expected+'0')
 		{
-			cout << "valid frame" << endl;
-			cout << "next_frame_to_send: " << next_frame_to_send << endl;
-			inc();
+			string temp = c.crc_check(bitstring.substr(1, len - 1));
+			cout << "CRC check: " << temp << endl;
+			for (int i = 0; i < temp.length(); i++)
+				if (temp[i] == '1')
+				{
+					cout << "frame error" << endl;
+					return false;
+				}
+			cout << "valid frame";
+			cout << "      sending ACK: " << frame_expected << endl;
+			return true;
 		}
 		else
-			cout << "invalid frame" << endl;
+			return false;
+	}
+	string to_physical_layer()
+	{
+		string frame = "";
+		frame += (frame_expected + '0');
+		inc();
+		return frame;
 	}
 	void inc() {
-		next_frame_to_send = 1 - next_frame_to_send;
+		frame_expected = 1 - frame_expected;
 	}
-	int next_frame_to_send;
-	string buffer;
+	int frame_expected;
 };
 
 void pack_frame(int* num, const char* buff, int len, char* frame)
@@ -193,7 +196,7 @@ void unpack_frame(int* num, char* buff, char* frame, int size)
 	memcpy(buff, frame + sizeof(int), size - sizeof(int));
 }
 
-void init(CRC& c, UDPSocket& so_send, UDPSocket& so_recv, Sender& s)
+void init(CRC& c, UDPSocket& so_send, UDPSocket& so_recv)
 {
 	ifstream infile("init.txt");
 	if (!infile)
@@ -212,61 +215,65 @@ void init(CRC& c, UDPSocket& so_send, UDPSocket& so_recv, Sender& s)
 		int sum = 1;
 		for (int j = temp[3].length() - i - 1; j > 0; j--)
 			sum *= 10;
-		recv_port += (temp[3][i] - '0')*sum;
+		send_port += (temp[3][i] - '0')*sum;
 	}
 	for (int i = 0; i < temp[4].length(); i++)
 	{
 		int sum = 1;
 		for (int j = temp[4].length() - i - 1; j > 0; j--)
 			sum *= 10;
-		send_port += (temp[4][i] - '0')*sum;
+		recv_port += (temp[4][i] - '0')*sum;
 	}
 	so_send.initialize(send_port, temp[2].c_str());
 	so_recv.initialize(recv_port, temp[2].c_str());
-	s.Init_sender(temp[1]);
 	filelost = (temp[5][0] - '0') * 10 + (temp[5][1] - '0');
-	frameerror= (temp[6][0] - '0') * 10 + (temp[6][1] - '0');
+	frameerror = (temp[6][0] - '0') * 10 + (temp[6][1] - '0');
 	infile.close();
 }
 
 int main()
 {
-	UDPSocket so_send,so_recv;
+	UDPSocket so_send, so_recv;
 	CRC c;
-	Sender s;
+	Receiver r;
 
-	init(c, so_send, so_recv, s);
-
-	timeval tv;
-	tv.tv_sec = 3000;
-	tv.tv_usec = 0;
-	if (setsockopt(so_recv.msocket, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(timeval)))
-	{
-		cout << "setsockopt failed" << endl;
-	}
-
+	char frame[FRAME_SIZE];
+	init(c, so_send, so_recv);
+	
 	int count = 0;
 	while (true)
 	{
 		count++;
 		cout << count << endl;
-		char send_frame[FRAME_SIZE], recv_frame[FRAME_SIZE];
-		string send_buf = s.to_physical_layer(c);
-		if (count % filelost == 3)
-		{
-			cout << "transmission error!" << endl;
-			send_buf[1] = XOR(send_buf[1], '1');
-		}
-		int len = send_buf.length();
-		pack_frame(&len, send_buf.c_str(), len, send_frame);
-		so_send.send(send_frame, FRAME_SIZE);
-		cout << "frame send:"<< send_buf << endl;
+		char recv_buf[FRAME_SIZE], recv_frame[FRAME_SIZE], send_frame[FRAME_SIZE];
 		so_recv.recv(recv_frame, FRAME_SIZE);
-		char recv_buf[FRAME_SIZE];
-		unpack_frame(&len, recv_buf,recv_frame, FRAME_SIZE);
-		cout << "frame recv:" << recv_buf[0] << endl;
-		s.from_physical_layer(recv_buf);
-
+		int len;
+		unpack_frame(&len, recv_buf, recv_frame, FRAME_SIZE);
+		if (count % frameerror != 2)
+		{
+			cout << "frame recv:";
+			for (int i = 0; i < len; i++)
+				cout << recv_buf[i];
+			cout << endl;
+			if (r.from_physical_layer(recv_buf, len,c))
+			{
+				string temp = r.to_physical_layer();
+				int l = temp.length();
+				pack_frame(&l, temp.c_str(), l, send_frame);
+				so_send.send(send_frame, FRAME_SIZE);
+				cout << "frame send:" << temp << endl;
+			}
+			else
+			{
+				cout << "frame error" << endl;
+				Sleep(3000);
+			}
+		}
+		else 
+		{
+			cout << "frame lost!" << endl;
+			Sleep(3000);
+		}
 		cout << endl;
 		Sleep(3000);
 	}
@@ -274,3 +281,4 @@ int main()
 	so_send.close();
 	so_recv.close();
 }
+
