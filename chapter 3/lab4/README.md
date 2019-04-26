@@ -1,6 +1,6 @@
 # 实验四 基于连续ARQ协议的可靠通信
 
-C++实现：[谁实现的，自己把名字写这]，删掉方括号别犯傻。
+C++实现：金靖轩，赖泽强
 
 Java实现：邹博文。
 
@@ -10,18 +10,13 @@ Python实现：同上。
 
 ### 编译说明
 
-```shell
-// 怎么编译？，在这里写编译指令。
-g++ ....
-```
+请使用visual studio进行编译。
 
 ### 运行说明
 
-写以下内容：
+只支持Windows。
 
-- 怎么运行？
-- 怎么输入？
-- 配置文件的格式？
+双击运行bin文件夹下两个可执行文件即可。
 
 ## Java
 
@@ -52,8 +47,6 @@ javac Server.java
     java GBNServer
     ```
 
-    
-
 - 输入格式
 
   - 运行程序后，程序会要求输入配置文件地址，Server端使用Server.ini，Client端使用Client.ini.
@@ -71,28 +64,21 @@ javac Server.java
     FilterLost = 10
     ```
 
-    
-
   - Client.ini
 
     ```ini
-    UDPPort = 8888
+  UDPPort = 8888
     portReceive = 8800
     portSend = 8888
     FilterError = 10
     FilterLost = 10
     ```
-
-    
-
+  
   - crc.ini
 
     ```ini
-    crc = 10001000000100001
+  crc = 10001000000100001
     ```
-
-    
-
 
 
 ## Python
