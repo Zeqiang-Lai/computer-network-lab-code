@@ -4,7 +4,7 @@ C++实现：金靖轩，赖泽强
 
 Java实现：邹博文。
 
-Python实现：同上。
+Python实现：李安腾。
 
 ## C++
 
@@ -86,10 +86,8 @@ javac Server.java
 ### 运行说明
 
 写以下内容：
-
-- 怎么运行？
-- 怎么输入？
-- 配置文件的格式？
+-运行方法：
+将host1.py,host2.py,lab_4.ini,crc.py置于同一文件夹下，先运行host2，后运行host1
 
 ## 输出格式
 
