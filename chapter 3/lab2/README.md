@@ -93,7 +93,7 @@ javac ....
 写以下内容：
 ```
 运行命令：
-./Bit_Fill.oy [configurations]
+./Bit_Fill.py [configurations]
 ./Byte_Fill.py [configurations]
 ```
 
