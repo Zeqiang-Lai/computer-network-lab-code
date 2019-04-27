@@ -11,12 +11,13 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * 客户端
  */
 public class GBNClient extends Thread{
-	private String path = ".\\bin\\Client.ini";
+	private String path = "E:\\\\NetworkExperiment\\\\computer-network-lab-code\\\\chapter 3\\\\lab4\\\\java\\\\bin\\Client.ini";
     private int portSend = 8888;
     private int portReceive = 8800;
     private int FilterError = 10;
@@ -44,8 +45,15 @@ public class GBNClient extends Thread{
     }
     public GBNClient() throws Exception 
     {
+    	Scanner sc = new Scanner(System.in);
+    	System.out.println("请输入客户端配置文件路径((使用默认配置请直接 回车)):");
     	
-    	ReadIniFile rf = new ReadIniFile(path);
+    	String p = sc.nextLine();
+    	if(!p.equals("")) {
+    		System.out.println("输入的文件路径为:" + p);
+    		path = p;
+    	}
+    	ReadIniFile rf = new ReadIniFile(path); 
     	Map<String,String> map = ReadIniFile.readFile();
     	portReceive = Integer.parseInt(map.get("portReceive"));
     	portSend = Integer.parseInt(map.get("portSend"));
@@ -79,9 +87,10 @@ public class GBNClient extends Thread{
                 //开始计时器
                 model.setTime(3);
             }
-            System.out.println("[ACK](Server ---> Client) 从服务器获得的数据:" + fromServer );
+            //System.out.println();
+            System.out.println("--------------------接收-------------------\n"+"(Server ---> Client)收到确认帧：[ACK = " + ack+"]");
             //System.out.println( "此时base为 " + base);
-            System.out.println("\n");
+            System.out.println("");
         }
 
     }
@@ -90,6 +99,7 @@ public class GBNClient extends Thread{
 	public void run() {
     	//接收数据8800
 		// TODO Auto-generated method stub
+    	System.out.println("监听服务器线程启动\n");
     	 try {
              datagramSocket = new DatagramSocket(portReceive);
              while (true) {
@@ -100,7 +110,7 @@ public class GBNClient extends Thread{
                  //String received = new String(receivedData, 0, receivedData.length);//offset是初始偏移量
                  String received = new String(datagramPacket.getData()).trim();
                  String[] info = received.split("-");
-                
+                 System.out.println();
                  System.out.println(received);
                  //收到了预期的数据
                  if(Integer.parseInt(info[0]) == exceptedSeq) {
@@ -109,45 +119,40 @@ public class GBNClient extends Thread{
                 		 sb= new StringBuffer(info[1] +info[2]);
                 	 
                      String check = Crc.crc_check(sb);
-                     System.out.println("check ==" + check);
+                     //System.out.println("check ==" + check);
                      int pos = check.indexOf("1");
-                     System.out.println("pos ==" + pos);
+                     //System.out.println("pos ==" + pos);
                      if(pos == -1) {
                     	 //此时数据正确
                     	 sendAck(exceptedSeq);
-                    	 System.out.println("----------------CRC校验通----------------");
-                    	 System.out.println("客户端期待的数据编号: " + exceptedSeq);
-                    	 System.out.println("服务器发送帧的序号为: " + info[0] + ",服务器发送的数据为 " + info[1]);
+                    	 System.out.println("--------------------接收-------------------\n"+"收到数据帧: [Num=" + info[0] +"][Data=" + info[1] + "]\n" + "Frame_expected = " + exceptedSeq + "\nCRC校验成功");
+                    	 
+                    	 
+//                    	 System.out.println("----------------CRC校验通----------------");
+//                    	 
+//                    	 System.out.println("[Data](Server ----> Client) 服务器发送帧的序号为: " + info[0] + ",服务器发送的数据为 " + info[1] + "客户端期待的数据编号: " + exceptedSeq);
                     	 exceptedSeq++;
                     	 System.out.println();
                      }else {
                     	 //此时数据出错
-                    	 System.out.println("-----------------------CRC校验不成功------------------------");
+                    	 System.out.println("--------------------接收-------------------\n"+"收到数据帧: [Num=" + info[0] +"][Data=" + info[1] + "]\n" + "Frame_expected = " + exceptedSeq + "\nCRC校验失败");
+                    	
                     	 sendAck(exceptedSeq -1);
                     	 System.out.println();
                      }
                  }else {//不是期待数据
-                	 System.out.println("客户端期待的数据编号:" + exceptedSeq);
-                     System.out.println("+++++++++++++++++++++客户端未收到预期数据+++++++++++++++++++++");
+                	 System.out.println("--------------------接收-------------------\n"+"收到数据帧: [Num=" + info[0] +"][Data=" + info[1] + "]\n" + "Frame_expected = " + exceptedSeq + "\n丢弃非预期帧");
+                	 System.out.println();
+                	 
+                     System.out.println();
+//                	 System.out.println("客户端期待的数据编号:" + exceptedSeq);
+//                     System.out.println("+++++++++++++++++++++客户端未收到预期数据+++++++++++++++++++++");
                      //仍发送之前的ack
                      sendAck(exceptedSeq - 1);
                      System.out.println();
                  }
                  
-//                 if (Integer.parseInt().trim()) == exceptedSeq) {
-//                     //发送ack
-//                     sendAck(exceptedSeq);
-//                     System.out.println("客户端期待的数据编号:" + exceptedSeq);
-//                     //期待值加1
-//                     exceptedSeq++;
-//                     System.out.println('\n');
-//                 } else {
-//                     System.out.println("客户端期待的数据编号:" + exceptedSeq);
-//                     System.out.println("+++++++++++++++++++++客户端未收到预期数据+++++++++++++++++++++");
-//                     //仍发送之前的ack
-//                     sendAck(exceptedSeq - 1);
-//                     //System.out.println('\n');
-//                 }
+
              }
          }catch(IOException e){
                  e.printStackTrace();
@@ -179,10 +184,12 @@ public class GBNClient extends Thread{
      */
     public void timeOut() throws Exception {
         for(int i = base;i < nextSeq;i++){
-        	 StringBuffer sb = new StringBuffer("" + i + dataSend[i-1]);
-             String remainder = Crc.crc_remainder(new StringBuffer("" + dataSend[i-1]));
+        	System.out.println();
+        	StringBuffer sb = new StringBuffer("" + i + dataSend[i-1]);
+            String remainder = Crc.crc_remainder(new StringBuffer("" + dataSend[i-1]));
             String clientData = "" + i + "-" + dataSend[i-1] + "-" + remainder ;
-            System.out.println("(Client ---> Server) 向服务器重新发送帧的序号: " + i + ",要发送的数据为: " + dataSend[i-1]);
+            System.out.println("--------------------超时重发-------------------\n"+"(Client ---> Server) ACK_expected = " + i + ", Next_frame_to_send = " +( i+1) + ", Frame_expected = " + exceptedSeq + "\n" + "待发送帧：[" + i + "]  [Data =" + dataSend[i -1] + "]\n" + "模拟：重新发送");
+        	System.out.println();
             byte[] data = clientData.getBytes();
             DatagramPacket datagramPacket = new DatagramPacket(data, data.length, inetAddress, portSend);
             datagramSocket.send(datagramPacket);
@@ -192,9 +199,14 @@ public class GBNClient extends Thread{
     	datagramSocket = new DatagramSocket();
         inetAddress = InetAddress.getLocalHost();
         while (nextSeq < base + N && nextSeq <= dataSend.length) {
+        	System.out.println();
             //不发编号为3的数据，模拟数据丢失
             if((nextSeq%10) == 3) {
-                nextSeq++;
+            	System.out.println("--------------------发送-------------------\n"+"(Client ---> Server) ACK_expected = " + nextSeq + ", Next_frame_to_send = " +( nextSeq+1) + ", Frame_expected = " + exceptedSeq + "\n" + "待发送帧：[" + nextSeq + "]  [Data =" + dataSend[nextSeq -1] + "]\n" + "模拟：丢失");
+            	
+            	System.out.println();
+
+            	nextSeq++;
                 continue;
             }
             
@@ -203,11 +215,16 @@ public class GBNClient extends Thread{
             String clientData;
             if(nextSeq % 10 == 9) {//发送错误数据帧
             	clientData = ""+nextSeq + "-"+ dataSend[nextSeq-1] + "1" +"-" + remainder;
+            	System.out.println("--------------------发送-------------------\n"+"(Client ---> Server) ACK_expected = " + nextSeq + ", Next_frame_to_send = " +( nextSeq+1) + ", Frame_expected = " + exceptedSeq + "\n" + "待发送帧：[" + nextSeq + "]  [Data =" + dataSend[nextSeq -1] + "]\n" + "模拟：传输错误");
+            	
+            	System.out.println();
             }else {
                 clientData = ""+nextSeq + "-"+ dataSend[nextSeq-1] +"-" + remainder;
+                System.out.println("--------------------发送-------------------\n"+"(Client ---> Server) ACK_expected = " + nextSeq + ", Next_frame_to_send = " +( nextSeq+1) + ", Frame_expected = " + exceptedSeq + "\n" + "待发送帧：[" + nextSeq + "]  [Data" + dataSend[nextSeq -1] + "]\n" + "模拟：正确发送");
+            	System.out.println();
 
             }
-            System.out.println("(Client ---> Server) 向服务器发送帧的序号为: "+nextSeq+",要发送的数据为: " + dataSend[nextSeq-1]);
+            //System.out.println("(Client ---> Server) 向服务器发送帧的序号为: "+nextSeq+",要发送的数据为: " + dataSend[nextSeq-1]);
 
             byte[] data = clientData.getBytes();
             DatagramPacket datagramPacket = new DatagramPacket(data, data.length, inetAddress, portSend);

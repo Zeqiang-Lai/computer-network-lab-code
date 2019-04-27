@@ -32,7 +32,7 @@ public:
 	string crc_check(string input_bitstring)
 	{
 		int len_poly = poly.length();
-		int len_input = input_bitstring.length() - len_poly;
+		int len_input = input_bitstring.length() - len_poly+1;
 		string padded_input = input_bitstring;
 
 		for (int i = 0; i < len_input; ++i) {
