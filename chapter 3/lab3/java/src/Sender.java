@@ -8,10 +8,11 @@ import java.net.UnknownHostException;
 
 public class Sender {
     final private static String TAG = "SocketUdp: ";//输出错误信息不用管
-    private static final int TIMEOUT = 5000;  //设置接收数据的超时时间
-    private static final int PORT= 8888;//监听和发送的端口
-    private static final int FILTERERROR=10;//平均每十帧出错一次
-    private static final int FILTERLOST=10;//平均没十帧丢失一帧
+   private static  int TIMEOUT = 5000;  //设置接收数据的超时时间
+   private static  int PORT= 8888;//监听和发送的端口
+   private static  int FILTERERROR=10;//平均每十帧出错一次
+    private static  int FILTERLOST=10;//平均没十帧丢失一帧
+   private static  String PRODUCTOR_STR="10001000000100001";
     public static int MyFilter()
     {
 
@@ -28,10 +29,21 @@ public class Sender {
         else return 0;
 
     }
-    public static void main(String args[])
+    public static void main(String args[])throws IOException
     {
-        //从文件中读取一行
-        String sendStr="message 1";
+        String  configure_path="SenderConfigure.ini";
+        if(args.length>1)
+        {
+            configure_path=args[0];
+        }
+        //使用配置文件初始化
+        TIMEOUT= Integer.valueOf(readconfigure.readConfigFile(configure_path,"TIMEOUT")).intValue();
+        PORT= Integer.valueOf(readconfigure.readConfigFile(configure_path,"PORT")).intValue();
+        FILTERERROR= Integer.valueOf(readconfigure.readConfigFile(configure_path,"FILTERERROR")).intValue();
+        FILTERLOST= Integer.valueOf(readconfigure.readConfigFile(configure_path,"FILTERLOST")).intValue();
+
+        PRODUCTOR_STR=readconfigure.readConfigFile(configure_path,"PRODUCTOR_STR");
+        String sendStr=readconfigure.readConfigFile(configure_path,"SEND_STR");
         //成功发送次数的计数器
         int success_sended_amout=0;
         //发送完所有数据后退出，success_sended_amount控制
@@ -62,7 +74,7 @@ public class Sender {
                     //添加crc和flag位
 
                     String binary_str_send=BinaryChange.conver2HexStr(buf_send);
-                    String productor_str="10001000000100001";
+                    String productor_str=PRODUCTOR_STR;
                     String crc_remained=crc.crc_remainder(new StringBuffer(binary_str_send),new StringBuffer(productor_str));
                     String flag_str;
                     if(success_sended_amout%2==0)

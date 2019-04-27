@@ -71,18 +71,29 @@ vi Byte_Fill_data.ini
 ### 编译说明
 
 ```shell
-// 怎么编译？，在这里写编译指令。
-javac ....
-不会Java命令行编译的话学下，学不懂？你可以选择弃疗，然后把这部分删了。
+java -jar ByteFill.jar[configurations]
+java -jar BitFill.jar[configurations]
 ```
 
 ### 运行说明
 
-写以下内容：
+输入存储在配置文件中，其格式如下：
 
-- 怎么运行？
-- 怎么输入？
-- 配置文件的格式？
+1-2行可替换为你的输入，注意：括号内不要作为输入
+
+Bit_Fill_data.ini文件：
+
+```
+InfoString=01100101011111111111101010101110    （64bits）
+FlagString=01111110
+```
+
+Byte_Fill_data.ini文件：
+
+```
+InfoString=347D7E807E40AA7D                    （32bits）
+FlagString=7E
+```
 
 
 
