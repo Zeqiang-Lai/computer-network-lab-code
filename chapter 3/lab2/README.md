@@ -91,7 +91,32 @@ javac ....
 ### 运行说明
 
 写以下内容：
+```
+运行命令：
+./Bit_Fill.oy [configurations]
+./Byte_Fill.py [configurations]
+```
 
-- 怎么运行？
-- 怎么输入？
-- 配置文件的格式？
+### 输入文件
+
+输入存储在同一文件夹中，其格式如下：
+
+1-2行可替换为你的输入，注意：括号内不要作为输入
+
+Bit_Fill_data.ini文件：
+
+```
+InfoString=01100101011111111111101010101110    （64bits）
+FlagString=01111110
+```
+
+Byte_Fill_data.ini文件：
+
+```
+InfoString=347D7E807E40AA7D                    （32bits）
+FlagString=7E
+```
+
+### 配置说明
+
+在windows下使用python3.7编译，python2可能会出现语法错误
