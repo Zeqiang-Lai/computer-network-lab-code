@@ -33,6 +33,9 @@ java -jar Receiver.jar [configuration]
 ```
 
 ### 运行说明
+
+需要java12
+
 配置文件
 TIMEOUT=5000
 PORT=8888

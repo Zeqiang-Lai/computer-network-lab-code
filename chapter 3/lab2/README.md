@@ -77,6 +77,8 @@ java -jar BitFill.jar[configurations]
 
 ### 运行说明
 
+需要java12
+
 输入存储在配置文件中，其格式如下：
 
 1-2行可替换为你的输入，注意：括号内不要作为输入
