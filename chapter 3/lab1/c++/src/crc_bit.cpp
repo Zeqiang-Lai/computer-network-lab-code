@@ -51,21 +51,30 @@ int to_bytes_stream(char const bit_string[], int n_char, uint8_t** bit_stream)
     int n_bytes = (n_char+7) / 8;
     *bit_stream = new uint8_t[n_bytes];
 
-    // 10001010 01010101 111
-    // 10001010 01010101 11100000  pad zeros at the tail.
-    // byte0    byte1    byte2
-    // 76543210
+    // pad zero at the tail
+    // uint8_t tmp_byte;
+    // for(int byte=0; byte<n_bytes; ++byte)
+    // {
+    //     tmp_byte = 0;
+    //     for(int bit=0; bit<8; ++bit) {
+    //         if(bit_string[(byte+1)*8-bit-1] == '1')
+    //             tmp_byte |= 1 << bit;
+    //     }
+    //     (*bit_stream)[byte] = tmp_byte;
+    // }
 
+    // pad zero at the front
     uint8_t tmp_byte;
-    for(int byte=0; byte<n_bytes; ++byte)
+    for(int byte=n_bytes-1; byte>=0; --byte)
     {
         tmp_byte = 0;
         for(int bit=0; bit<8; ++bit) {
-            if(bit_string[(byte+1)*8-bit-1] == '1')
+            if(bit_string[n_char-1-(bit+(n_bytes-byte-1)*8)] == '1')
                 tmp_byte |= 1 << bit;
         }
         (*bit_stream)[byte] = tmp_byte;
     }
+
     return n_bytes;
 }
 
