@@ -206,7 +206,7 @@ void show_receive_string_result(string receive_string)
     printf("\n");
 
     crc crc_code = crc_remainder((uint8_t*)msg, len_msg);
-    if(crc_code == 1)
+    if(crc_code == 0)
         printf("Receive string is valid!\n");
     else
         printf("Invalid Receive string. CRC code=%d\n", crc_code);
