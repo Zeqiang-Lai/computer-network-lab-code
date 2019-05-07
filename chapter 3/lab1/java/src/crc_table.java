@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.lang.String;
 import java.lang.*;
 import java.io.*;
-public class crc_bit {
+public class crc_table {
     static final int WIDTH =16;
     static final int TOPBIT =1<<(WIDTH-1);
     static final int POLYNOMIAL =0x1021;
