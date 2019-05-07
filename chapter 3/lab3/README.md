@@ -33,21 +33,22 @@ Sender.exe     //Windows
 
 ### 编译说明
 
-```shell
-// 怎么编译？，在这里写编译指令。
-javac ....
-不会Java命令行编译的话学下，学不懂？你可以选择弃疗，然后把这部分删了。
+```
+java -jar Sender.jar [configuration]
+java -jar Receiver.jar [configuration]
 ```
 
 ### 运行说明
 
-写以下内容：
+需要java12
 
-- 怎么运行？
--在ide中直接运行
-- 怎么输入？
--还没有设置输入，程序里已经设置过了一两个字符串
-- 配置文件的格式？
+配置文件
+TIMEOUT=5000
+PORT=8888
+FILTERERROR=10
+FILTERLOST=10
+SEND_STR=message1
+PRODUCTOR_STR=10001000000100001
 
 ## Python
 

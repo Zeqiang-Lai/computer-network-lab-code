@@ -1,8 +1,8 @@
 .DS_Store
 .vscode
 *.docx
-chapter3/doc/*
-*/*/*/bin/*
+chapter 3/doc/*
+
 !*/*/*/bin/*.ini
 *.class
 *.o
