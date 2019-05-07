@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stdint.h>
 using namespace std;
 
 typedef uint16_t crc;
@@ -106,7 +107,7 @@ int to_char_stream(uint8_t const bit_stream[], int n_bytes, char** bit_string)
 int read_configuration(string file_path, string& poly, string& send_string, string& received_string)
 {
     // open configuration file
-    ifstream inifile(file_path);
+    ifstream inifile(file_path.c_str());
     if(inifile.fail()) {
         cerr << "Error: configuration file not found." << endl;
         inifile.close();
