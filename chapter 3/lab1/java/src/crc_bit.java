@@ -7,27 +7,54 @@ public class crc_bit {
     static final int TOPBIT =1<<(WIDTH-1);
     static final int POLYNOMIAL =0x1021;
     static String bitstream[];
+    static int crc_table[]=new int[256];
     public static int getUint16(int i){
         return i & 0x0000ffff;
+    }
+
+    public static void build_crc_table()
+    {
+        int remainder;
+        for(int dividend=0;dividend<256;++dividend)
+        {
+            remainder=dividend<<(WIDTH-8);
+            for(int bit=8;bit>0;--bit)
+            {
+                if((remainder&TOPBIT)!=0)
+                {
+                    remainder=(remainder<<1)^POLYNOMIAL;
+                }
+                else
+                {
+                    remainder=(remainder<<1);
+                }
+            }
+            crc_table[dividend]=getUint16(remainder);
+        }
     }
 
     public static int crc_remainder(int msg[],int n_bytes)
     {
         int  remainder=0;
+        int index;
         for(int bytes=0;bytes<n_bytes;++bytes)
         {
             remainder^=((int)msg[bytes]<<(WIDTH-8));
-            for(int bit=8;bit>0;--bit)
-            {
-                if((remainder&TOPBIT)!=0)
-                { remainder=getUint16(remainder<<1);
-                    remainder=getUint16(remainder^POLYNOMIAL);}
-                else
-                    remainder=(remainder<<1);
-            }
+            index=remainder>>(WIDTH-8);
+            remainder=getUint16((remainder<<8)^crc_table[index]);
+//            for(int bit=8;bit>0;--bit)
+//            {
+//                if((remainder&TOPBIT)!=0)
+//                { remainder=getUint16(remainder<<1);
+//                    remainder=getUint16(remainder^POLYNOMIAL);}
+//                else
+//                    remainder=(remainder<<1);
+//            }
         }
         return remainder;
     }
+
+
 
 //    public static boolean crc_check(char msg_with_crc[],int n_bytes)
 //    {
@@ -86,6 +113,16 @@ public class crc_bit {
         return b;
    }
 
+    public static StringBuffer to_char_stream(StringBuffer string)
+    {
+        StringBuffer b=new StringBuffer();
+        for(int i=0;i<string.length()/2;i++)
+        {
+            b.append(Integer.toBinaryString(Integer.parseInt(string.substring(2*i,2*i+2),16)));
+        }
+        return b;
+    }
+
     public static StringBuffer read_configuration(String file_path)throws Exception//从ini文件中读取多项式
     {
         StringBuffer sb=new StringBuffer();
@@ -130,12 +167,15 @@ public class crc_bit {
         int crc_code=crc_remainder(ans2,sendstring2.length()/2);
         System.out.println(Integer.toHexString(crc_code));
         StringBuffer msg_with_code=sendstring2.append(Integer.toHexString(crc_code));
+        System.out.print("Message With Code:");
+        System.out.println(to_char_stream(msg_with_code));
         System.out.print("Message With Code in Hex:");
         for(int i=0;i<msg_with_code.length();i++)
         {
             System.out.print(msg_with_code.substring(i,i+1));
         }
         System.out.println("");
+
     }
 
     public static void show_receive_string_result(StringBuffer receive_string)
@@ -175,6 +215,7 @@ public class crc_bit {
 //        String a="hello";
 //        char a2[]=a.toCharArray();
 //        System.out.println(crc_remainder(a2,5));
+        build_crc_table();
         String ini_path="crc.ini";
         String h[]=new String[100];//存储划分后的子串
         if(args.length==1)

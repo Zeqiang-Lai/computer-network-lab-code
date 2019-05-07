@@ -113,6 +113,17 @@ public class crc_bit {
         return b;
    }
 
+
+   public static StringBuffer to_char_stream(StringBuffer string)
+    {
+        StringBuffer b=new StringBuffer();
+        for(int i=0;i<string.length()/2;i++)
+        {
+            b.append(Integer.toBinaryString(Integer.parseInt(string.substring(2*i,2*i+2),16)));
+        }
+        return b;
+    }
+
     public static StringBuffer read_configuration(String file_path)throws Exception//从ini文件中读取多项式
     {
         StringBuffer sb=new StringBuffer();
@@ -157,6 +168,8 @@ public class crc_bit {
         int crc_code=crc_remainder(ans2,sendstring2.length()/2);
         System.out.println(Integer.toHexString(crc_code));
         StringBuffer msg_with_code=sendstring2.append(Integer.toHexString(crc_code));
+        System.out.print("Message With Code:");
+        System.out.println(to_char_stream(msg_with_code));
         System.out.print("Message With Code in Hex:");
         for(int i=0;i<msg_with_code.length();i++)
         {
