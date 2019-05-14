@@ -13,9 +13,7 @@ import jpcap.packet.Packet;
 import jpcap.packet.TCPPacket;
  
 /**
- * 网络抓包并对内容进行解析
- * @author Wll
- * @time 2015-6-14
+
  *
  */
 public class ARPCaptor {
