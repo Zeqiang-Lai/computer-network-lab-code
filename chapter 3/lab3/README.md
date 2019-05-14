@@ -1,6 +1,6 @@
 # 实验三 基于停止等待协议的可靠通信
 
-C++实现：[谁实现的，自己把名字写这]，删掉方括号别犯傻。
+C++实现：蒋安立 金靖轩
 
 Java实现：刘文卓 
 
@@ -11,17 +11,23 @@ Python实现：李安腾 张诗意
 ### 编译说明
 
 ```shell
-// 怎么编译？，在这里写编译指令。
-g++ ....
+g++ Sender.cpp -o Sender
+g++ Receiver.cpp -o Receiver
 ```
 
 ### 运行说明
 
-写以下内容：
+shell
 
-- 怎么运行？
-- 怎么输入？
-- 配置文件的格式？
+./Receiver   //Linux
+
+./Sender     //Linux
+
+Receiver.exe    //Windows
+
+Sender.exe     //Windows
+
+// configuration file path 默认为init.txt
 
 ## Java
 
