@@ -2,7 +2,7 @@
 
 C++实现：金靖轩，蒋安立
 
-Java实现：同上。
+Java实现：刘文卓
 
 Python实现：张诗意，李安腾
 
@@ -70,14 +70,19 @@ vi Byte_Fill_data.ini
 
 ### 编译说明
 
-```
-java -jar ByteFill.jar[configurations]
-java -jar BitFill.jar[configurations]
+```shell
+javac bit_fill_Main.java
+javac byte_fill_main.java
+
 ```
 
 ### 运行说明
+-选择jar文件运行
 
-输入存储在配置文件中，其格式如下：
+java -jar ByteFill.jar[configurations]
+java -jar BitFill.jar[configurations]
+
+-输入存储在配置文件中，其格式如下：
 
 1-2行可替换为你的输入，注意：括号内不要作为输入
 

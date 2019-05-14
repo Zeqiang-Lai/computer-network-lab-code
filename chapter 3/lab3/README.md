@@ -2,7 +2,7 @@
 
 C++实现：[谁实现的，自己把名字写这]，删掉方括号别犯傻。
 
-Java实现：同上。
+Java实现：刘文卓 
 
 Python实现：李安腾 张诗意
 
@@ -27,12 +27,17 @@ g++ ....
 
 ### 编译说明
 
-```
-java -jar Sender.jar [configuration]
-java -jar Receiver.jar [configuration]
+```shell
+javac Receiver.java
+javac Sender.java
+
 ```
 
 ### 运行说明
+选择jar文件运行
+java -jar Sender.jar [configuration]
+java -jar Receiver.jar [configuration]
+
 配置文件
 TIMEOUT=5000
 PORT=8888
