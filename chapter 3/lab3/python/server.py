@@ -7,7 +7,7 @@ import random
 '''
 以下读取配置文件，并初始化变量
 '''
-init = crc.read_configuration('crc.ini')
+init = crc.read_configuration('lab3.ini')
 poly = ''.join(init[3]).replace("\n", "")
 ip=init[6].replace('\n', '').split('=')[1]
 port=int(init[7].split('=')[1])
