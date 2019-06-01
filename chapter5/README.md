@@ -45,15 +45,15 @@
 
 ## 实验要求解释
 
-### 基于ICMP的ping程序
+### Lab1 基于ICMP的ping程序
 
 与windows的ping命令的输入输出一致。
 
-### 基于ICMP的traceroute程序
+### Lab2 基于ICMP的traceroute程序
 
 与windows的traceroute命令的输入输出一致。
 
-### 距离矢量(Distance Vector)算法
+### Lab3 距离矢量(Distance Vector)算法
 
 模拟更新路由表。
 
@@ -66,7 +66,6 @@
 Table[Time][Point]: 路由表
 
 输入图
-随机初始化各条边的权重(即距离)
 初始化Table[0][所有点]
 int step = 1;
 while not converge:
