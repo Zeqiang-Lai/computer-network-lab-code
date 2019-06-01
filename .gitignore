@@ -6,3 +6,4 @@ chapter 3/doc/*
 !*/*/*/bin/*.ini
 *.class
 *.o
+chapter5/lab1/c++/ping.cpp
