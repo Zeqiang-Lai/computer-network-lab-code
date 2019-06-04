@@ -27,16 +27,16 @@
 
 # 第五章 网络层
 
-- [ ] Lab1 基于ICMP的ping程序
-  - [ ] C++
-  - [ ] Java
+- [x] Lab1 基于ICMP的ping程序
+  - [x] C++
+  - [x] Java
   - [x] Python3
 - [ ] Lab2 基于ICMP的traceroute程序
   - [x] C++
   - [ ] Java
   - [ ] Python3
-- [ ] Lab3 距离矢量(Distance Vector)算法
+- [x] Lab3 距离矢量(Distance Vector)算法
   - [x] C++
-  - [ ] Java
-  - [ ] Python3
+  - [x] Java
+  - [x] Python3: 待完善
 
