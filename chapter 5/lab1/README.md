@@ -7,6 +7,8 @@ Java实现：邹博文
 Python实现：黄天
 
 ## C++
+运行环境
+  ./ping  [域名]
 
 ## Java
 
