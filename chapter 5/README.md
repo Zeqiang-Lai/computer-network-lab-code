@@ -41,19 +41,32 @@
 
 ## 报告安排
 
-待定
+**运行说明：** 参照lab3的README写。
+
+**实验报告：** 
+
+模版已经发群里了，请直接复制一份模版，在模版基础上直接写。模版显示效果有问题的联系我（标准的效果应该和pdf版本的一致）。
+
+| 实验                               | 负责人 |
+| ---------------------------------- | ------ |
+| Lab1 基于ICMP的ping程序            | 黄天   |
+| Lab2 基于ICMP的traceroute程序      | 张诗意 |
+| Lab3 距离矢量(Distance Vector)算法 | 刘文卓 |
+| Lab4 静态路由器软件                | 待定   |
+
+需要运行截图的找对应的人要。遇到迟迟不回复的向我反映。
 
 ## 实验要求解释
 
-### 基于ICMP的ping程序
+### Lab1 基于ICMP的ping程序
 
 与windows的ping命令的输入输出一致。
 
-### 基于ICMP的traceroute程序
+### Lab2 基于ICMP的traceroute程序
 
 与windows的traceroute命令的输入输出一致。
 
-### 距离矢量(Distance Vector)算法
+### Lab3 距离矢量(Distance Vector)算法
 
 模拟更新路由表。
 
@@ -66,7 +79,6 @@
 Table[Time][Point]: 路由表
 
 输入图
-随机初始化各条边的权重(即距离)
 初始化Table[0][所有点]
 int step = 1;
 while not converge:
@@ -76,3 +88,4 @@ while not converge:
 输出路由表
 ```
 
+### Lab4 静态路由器软件
