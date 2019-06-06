@@ -68,6 +68,10 @@ def reply_ping(send_request_ping_time,rawsocket,data_Sequence,timeout = 2):
     实现 ping 主机/ip
     '''
 def ping(host):
+    num=0
+    min=1000
+    max=0
+    alltimes=0
     data_type = 8 # ICMP Echo Request
     data_code = 0 # must be zero
     data_checksum = 0 # "...with value 0 substituted for this field..."
@@ -81,11 +85,21 @@ def ping(host):
         send_request_ping_time,rawsocket,addr = raw_socket(dst_addr,icmp_packet)
         times = reply_ping(send_request_ping_time,rawsocket,data_Sequence + i)
         if times > 0:
+            if times<min:
+                min=times
+            if times>max:
+                max=times
+            alltimes=alltimes+times
             print("来自 {0} 的回复: 字节=32 时间={1}ms".format(addr,int(times*1000)))
+            num=num+1
             time.sleep(0.7)
         else:
             print("请求超时。")
-
+    print("\n")
+    print("{0} 的 Ping 统计信息:".format(addr))
+    print("     数据包：已发送=4，已接收={0}，丢失={1}({2}%丢失)".format(num,int((4-num)/4),25*(4-num)))
+    print("往返行程的估计时间(以毫秒为单位)：")
+    print("     最短={0}ms，最长={1}ms，平均={2}ms".format(int(min*1000),int(max*1000), int((alltimes/4)*1000)))
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         sys.exit('Usage: ping.py <host>')
