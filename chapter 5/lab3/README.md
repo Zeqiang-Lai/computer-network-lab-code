@@ -23,4 +23,8 @@ g++ dv_routing.cpp -o routing
 
 
 ## Python
-
+```
+//运行
+python myDVR.py
+```
+-`myDVR.py`和`DVinit.ini`需要放置在同一文件夹下
