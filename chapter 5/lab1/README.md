@@ -13,3 +13,6 @@ Python实现：黄天
 ## Java
 
 ## Python
+
+运行环境
+  ./ping.py [域名]
