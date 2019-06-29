@@ -9,6 +9,8 @@ Python实现：张诗意
 ## C++
 
 ## Java
+运行环境
+  ./java tracert  [域名]
 
 ## Python
 
