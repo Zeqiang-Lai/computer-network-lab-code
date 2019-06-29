@@ -11,7 +11,8 @@ Python实现：黄天
   ./ping  [域名]
 
 ## Java
-
+运行环境
+  ./java ping  [域名]
 ## Python
 
 运行环境
