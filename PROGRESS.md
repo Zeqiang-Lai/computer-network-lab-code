@@ -31,10 +31,10 @@
   - [x] C++
   - [x] Java
   - [x] Python3
-- [ ] Lab2 基于ICMP的traceroute程序
+- [x] Lab2 基于ICMP的traceroute程序
   - [x] C++
-  - [ ] Java
-  - [ ] Python3
+  - [x] Java
+  - [x] Python3
 - [x] Lab3 距离矢量(Distance Vector)算法
   - [x] C++
   - [x] Java

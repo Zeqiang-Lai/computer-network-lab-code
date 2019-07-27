@@ -8,6 +8,10 @@ Python实现：张诗意
 
 ## C++
 
+编译: `g++ trace.cpp -o trace`
+
+运行: `./trace 地址`
+
 ## Java
 
 ## Python
